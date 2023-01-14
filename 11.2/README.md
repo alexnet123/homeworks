@@ -18,6 +18,7 @@
 
 `Ответ:`
 
+![Снимок экрана от 2023-01-14 21-38-29](https://user-images.githubusercontent.com/75438030/212490672-a1683525-abac-41f0-af1e-616378b7e2d0.png)
 
 
 ---
@@ -27,6 +28,40 @@
 Запишите в memcached несколько ключей с любыми именами и значениями, для которых выставлен TTL 5. 
 
 *Приведите скриншот, на котором видно, что спустя 5 секунд ключи удалились из базы.*
+
+`Ответ:
+Можно воспользоваться скриптом на python
+`
+
+```
+from pymemcache.client import base
+import time 
+
+# Подключаемся к memcached
+client = base.Client(('localhost', 11211))
+ 
+# Добавим несколько ключей c TTL 5 sec
+client.set('test1', '12345', expire=5)
+client.set('test2', '54321', expire=5)
+
+i = 1
+t = 10
+while i < t:
+    # Получаем установленные ранее значение ключей:
+    test1 = client.get('test1')
+    test2 = client.get('test2')
+    print("==================================")
+    print("sec: ", i)
+    print('key: test1','value: ', test1)
+    print('key: test2','value: ', test2)
+    print("==================================")
+    time.sleep(1)
+    i = i + 1
+
+```
+
+![Снимок экрана от 2023-01-14 21-44-39](https://user-images.githubusercontent.com/75438030/212490842-5673be54-6ecc-4cfc-aeb9-b77a529c0e60.png)
+
 
 ---
 
