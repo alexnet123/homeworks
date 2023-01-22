@@ -1,0 +1,68 @@
+---
+#
+# Installing Elasticsearch Yandex 
+#
+- name: "Play Elasticsearch"
+  hosts: servers
+  become: true
+  tasks:
+    
+    #- name: "Update repositories cache"
+    #  shell: apt update && sudo apt -y full-upgrade
+    - name: "Update cache & Full system update"
+      apt:
+        update_cache: true
+        upgrade: dist
+
+    # Add the Elasticsearch apt repo
+    
+    - name: Adding Elasticsearch repo
+      apt_repository:
+        repo: deb  [trusted=yes] https://mirror.yandex.ru/mirrors/elastic/7/ stable main
+        state: present
+    
+    # Installing Elasticsearch
+    
+    - name: Install Elasticsearch
+      apt:
+        name: elasticsearch
+        state: latest
+        update_cache: yes
+       
+    # Update Elasticsearch config file to allow access (to secure Elasticsearch, bind to 'localhost'). 
+    
+    - name: Updating the config file to allow outside access
+      lineinfile:
+        destfile: /etc/elasticsearch/elasticsearch.yml
+        regexp: 'network.host:'
+        line: 'network.host: 127.0.0.1'
+     
+    # Update Elasticsearch port in config file 
+    
+    - name: Updating the port in config file 
+      lineinfile:
+        destfile: /etc/elasticsearch/elasticsearch.yml
+        regexp: 'http.port:'
+        line: 'http.port: 9200'
+
+    # cluster.name: my-application
+
+    - name: Updating cluster name 
+      lineinfile:
+        destfile: /etc/elasticsearch/elasticsearch.yml
+        regexp: 'cluster.name:'
+        line: 'cluster.name: supper-cluster-netology'
+
+    # Just force systemd to reread configs
+    - name: Just force systemd to reread configs (2.4 and above)
+      systemd:
+        daemon_reload: yes
+    
+    # Start Elasticsearch
+    - name: Starting Elasticsearch
+      service:
+        name: elasticsearch
+        state: started
+
+
+...

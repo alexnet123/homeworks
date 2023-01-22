@@ -1,0 +1,23 @@
+---
+#
+# Installing Logstash
+#
+- name: "Play Logstash"
+  hosts: servers
+  become: true
+  tasks:
+
+    # Install Logstash 
+    - name: Install Logstash with apt
+      apt:
+       name: logstash
+       state: latest
+       update_cache: yes
+
+    # Starting Logstash
+
+    - name: Starting Logstash
+      service:
+       name: logstash
+       state: started
+...

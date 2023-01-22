@@ -1,0 +1,23 @@
+---
+#
+# Installing Filebeat
+#
+- name: "Play Filebeat"
+  hosts: servers
+  become: true
+  tasks:
+
+    # Install Filebeat 
+    - name: Install Filebeat with apt
+      apt:
+       name: filebeat
+       state: latest
+       update_cache: yes
+
+    # Starting Filebeat
+
+    - name: Starting Filebeat
+      service:
+       name: filebeat
+       state: started
+...
