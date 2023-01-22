@@ -65,5 +65,5 @@ resource "yandex_compute_instance" "elk" {
      hostname_vm1 = "elk"
     }
   )
-  filename = "/home/alex/docs/iac/iac-yandex-terraform/ELK/templates/ansible/hosts"
+  filename = "/ELK/templates/ansible/hosts"
 }
