@@ -32,6 +32,13 @@
 
 *Приведите скриншот интерфейса Kibana, на котором видны логи Nginx.*
 
+`Ответ`
+
+![Снимок экрана от 2023-01-22 21-43-10](https://user-images.githubusercontent.com/75438030/213933896-32f2309b-d9d0-45c5-bc7e-d2183aef833a.png)
+
+
+![Снимок экрана от 2023-01-22 21-44-11](https://user-images.githubusercontent.com/75438030/213933935-c193c144-75c4-487e-b89a-9ddf3c1a567c.png)
+
 ---
 
 ### Задание 4. Filebeat. 
@@ -43,6 +50,9 @@
 `Ответ`
 
 ![Снимок экрана от 2023-01-22 21-11-33](https://user-images.githubusercontent.com/75438030/213933544-0abf6c68-dc49-48bc-a779-7d951601f366.png)
+
+
+![Снимок экрана от 2023-01-22 21-44-47](https://user-images.githubusercontent.com/75438030/213933952-e73afb97-3dd2-4265-a746-e8c54a4effa8.png)
 
 
 ## Дополнительные задания (со звёздочкой*)
