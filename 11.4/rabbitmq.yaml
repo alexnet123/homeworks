@@ -1,0 +1,75 @@
+- name: "Play RabbitMQ"
+  hosts: servers
+  become: true
+  tasks:
+    
+    - name: "Update cache & Full system update"
+      apt:
+        update_cache: true
+        upgrade: dist
+
+    - name: "Install and configure the necessary dependencies"
+      apt:
+        pkg:
+          - apt-transport-https
+          #- ca-certificates
+          - curl
+          - gnupg
+          #- lsb-release
+          - python3-pip
+        state: latest
+        update_cache: true
+
+    - name: "Install and upgrade pip"
+      pip:
+        name: pip
+        extra_args: --upgrade
+        executable: pip3
+    
+    - name: "Install lib python-pika"
+      pip:
+        name: pika
+        executable: pip3
+
+    - name: Adding repository entry erlang
+      apt:
+        deb: https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
+    
+    - name: "Update cache"
+      apt:
+        update_cache: true
+
+    - name: "Install erlang"
+      apt:
+        pkg:
+          - erlang
+        state: latest
+        update_cache: true
+
+
+    - name: install rabbitmq
+      apt: 
+        deb: https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.11.7/rabbitmq-server_3.11.7-1_all.deb 
+
+    
+    - name: enable rabbitmq plugins
+      rabbitmq_plugin:
+        names: rabbitmq_management
+        state: enabled
+
+    
+    - name: add rabbitmq users admin
+      rabbitmq_user:
+        user: admin
+        password: qwertyX14
+        vhost: /
+        tags: administrator
+        configure_priv: .*
+        read_priv: .*
+        write_priv: .*
+        state: present
+
+    - debug:
+        msg:
+        - "RabbitMQ URL http://{{ ansible_host }}:15672"
+        - "user: admin, password: superpassword"
