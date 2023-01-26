@@ -84,6 +84,11 @@ $ rabbitmqadmin get queue='hello'
 
 ![Снимок экрана от 2023-01-27 00-47-26](https://user-images.githubusercontent.com/75438030/214957940-8acc4312-0692-47c3-a786-cba72aa32b7d.png)
 
+![Снимок экрана от 2023-01-27 01-05-04](https://user-images.githubusercontent.com/75438030/214961169-89c642b3-3d51-4e45-b6ef-031baca32856.png)
+
+![Снимок экрана от 2023-01-27 01-06-21](https://user-images.githubusercontent.com/75438030/214961339-b6f8476b-cec8-488d-a377-c29657ba0091.png)
+
+![Снимок экрана от 2023-01-27 01-08-52](https://user-images.githubusercontent.com/75438030/214961805-fe486976-c819-48ca-931f-8a39ecf1c4be.png)
 
 
 ---
