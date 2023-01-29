@@ -24,10 +24,47 @@
 - ...
 - идентификатор структурного подразделения, внешний ключ, integer).
 
-## Дополнительные задания (со звёздочкой*)
-Эти задания дополнительные, то есть не обязательные к выполнению, и никак не повлияют на получение вами зачёта по этому домашнему заданию. Вы можете их выполнить, если хотите глубже шире разобраться в материале.
+`Ответ`
 
+![Снимок экрана от 2023-01-30 00-45-44](https://user-images.githubusercontent.com/75438030/215357372-a49a07a2-c888-400a-8d3f-236f2a1e7fdd.png)
 
-### Задание 2*
+```
+CREATE TABLE 'Сотрудника' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'ФИО' TEXT(100) DEFAULT NULL,
+'Оклад' INTEGER DEFAULT NULL,
+'Дата найма' NONE DEFAULT NULL,
+'Проект на который назначен' INTEGER DEFAULT NULL REFERENCES 'Проект' ('id'),
+'Должность' INTEGER DEFAULT NULL REFERENCES 'Должность' ('id'),
+'Тип подразделения' INTEGER DEFAULT NULL REFERENCES 'Тип подразделения' ('id'),
+'Структурное подразделение' INTEGER DEFAULT NULL REFERENCES 'Структурное подразделение' ('id'),
+'Адрес филиала' INTEGER DEFAULT NULL REFERENCES 'Адрес филиала' ('id')
+);
 
-Перечислите, какие, на ваш взгляд, в этой денормализованной таблице встречаются функциональные зависимости и какие правила вывода нужно применить, чтобы нормализовать данные.
+CREATE TABLE 'Должность' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'Должность' TEXT(100) DEFAULT NULL
+);
+
+CREATE TABLE 'Тип подразделения' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'Тип подразделения' TEXT DEFAULT NULL
+);
+
+CREATE TABLE 'Структурное подразделение' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'Структурное подразделение' TEXT DEFAULT NULL
+);
+
+CREATE TABLE 'Адрес филиала' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'Адрес филиала' TEXT DEFAULT NULL
+);
+
+CREATE TABLE 'Проект' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'Проект' TEXT DEFAULT NULL
+);
+
+```
+
