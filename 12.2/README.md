@@ -34,6 +34,8 @@ SELECT user FROM mysql.user;
 
 1.4. Дайте все права для пользователя sys_temp. 
 
+`Ответ:`
+
 ```
 GRANT ALL PRIVILEGES ON *.* TO 'sys_temp'@'localhost';
 
@@ -41,10 +43,16 @@ GRANT ALL PRIVILEGES ON *.* TO 'sys_temp'@'localhost';
 
 1.5. Выполните запрос на получение списка прав для пользователя sys_temp. (скриншот)
 
+`Ответ:`
+
 ![Снимок экрана от 2023-01-30 21-33-46](https://user-images.githubusercontent.com/75438030/215564850-9f0b1eeb-4e41-4535-adb1-0420b9876bcf.png)
 
 
 1.6. Переподключитесь к базе данных от имени sys_temp.
+
+`Ответ:`
+
+![Снимок экрана от 2023-01-30 21-37-13](https://user-images.githubusercontent.com/75438030/215565513-6cceb76d-22ee-444f-bb95-2cb90e74ce01.png)
 
 
 Для смены типа аутентификации с sha2 используйте запрос: 
@@ -53,12 +61,42 @@ ALTER USER 'sys_test'@'localhost' IDENTIFIED WITH mysql_native_password BY 'pass
 ```
 1.6. По ссылке https://downloads.mysql.com/docs/sakila-db.zip скачайте дамп базы данных.
 
+`Ответ:`
+
+![Снимок экрана от 2023-01-30 21-59-02](https://user-images.githubusercontent.com/75438030/215569854-f4208942-30d8-498b-9994-55afec8bdf87.png)
+
+
 1.7. Восстановите дамп в базу данных.
+
+`Ответ:`
+
+```
+
+CREATE DATABASE sakila DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+
+bash-4.4# mysql -u sys_temp -p sakila < /home/sakila-db/sakila
+sakila-data.sql    sakila-schema.sql  sakila.mwb         
+bash-4.4# mysql -u sys_temp -p sakila < /home/sakila-db/sakila-schema.sql 
+Enter password: 
+bash-4.4# mysql -u sys_temp -p sakila < /home/sakila-db/sakila-data.sql   
+
+```
 
 1.8. При работе в IDE сформируйте ER-диаграмму получившейся базы данных. При работе в командной строке используйте команду для получения всех таблиц базы данных. (скриншот)
 
-*Результатом работы должны быть скриншоты обозначенных заданий, а также простыня со всеми запросами.*
+`Ответ:`
 
+```
+SHOW DATABASES;
+USE sakila;
+SHOW TABLES;
+
+```
+
+![Снимок экрана от 2023-01-30 23-00-09](https://user-images.githubusercontent.com/75438030/215582823-e79195d4-7272-4dbc-aaca-5e5d1f372112.png)
+
+
+---
 
 ### Задание 2
 Составьте таблицу, используя любой текстовый редактор или Excel, в которой должно быть два столбца: в первом должны быть названия таблиц восстановленной базы, во втором названия первичных ключей этих таблиц. Пример: (скриншот/текст)
