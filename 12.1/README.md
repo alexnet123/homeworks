@@ -67,4 +67,58 @@ CREATE TABLE 'Проект' (
 );
 
 ```
+---
 
+### Доработка
+
+
+![Снимок экрана от 2023-02-04 01-44-34](https://user-images.githubusercontent.com/75438030/216725501-bb02bf7e-e91a-47d9-be6b-4c26beb1e2fc.png)
+
+
+```
+BEGIN TRANSACTION;
+
+CREATE TABLE IF NOT EXISTS `Сотрудники` (
+	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+	`ФИО`	TEXT,
+	`Оклад`	INTEGER,
+	`Дата найма`	INTEGER,
+	`Должность`	INTEGER REFERENCES 'Должность' ('id'),
+	`Тип подразделения`	INTEGER REFERENCES 'Тип подразделения' ('id'),
+	`Структурное подразделение`	INTEGER REFERENCES 'Структурное подразделение' ('id'),
+	`Адрес филиала`	INTEGER REFERENCES 'Адрес филиала' ('id')
+);
+
+CREATE TABLE IF NOT EXISTS `Тип подразделения` (
+	`id`	INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+	`Тип подразделения`	TEXT DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `Структурное подразделение` (
+	`id`	INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+	`Структурное подразделение`	TEXT DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `Проект` (
+	`id`	INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+	`Проект`	TEXT DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `Должность` (
+	`id`	INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+	`Должность`	TEXT ( 100 ) DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `Адрес филиала` (
+	`id`	INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+	`Адрес филиала`	TEXT DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `Связи` (
+	`Сотрудник`	INTEGER REFERENCES 'Сотрудники' ('id'),
+	`Проект`	INTEGER REFERENCES 'Проект' ('id')
+);
+
+COMMIT;
+
+```
