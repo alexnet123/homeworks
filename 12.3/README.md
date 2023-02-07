@@ -37,6 +37,16 @@ SELECT * FROM payment WHERE payment_date BETWEEN '2005-06-15' AND '2005-06-19' A
 
 Получите последние пять аренд фильмов.
 
+`Ответ:`
+
+```
+SELECT * FROM rental ORDER BY rental_date  DESC LIMIT 5;
+
+```
+
+![Снимок экрана от 2023-02-07 14-20-35](https://user-images.githubusercontent.com/75438030/217231375-31dfb906-3236-48dc-bb1f-7d448df76779.png)
+
+
 ### Задание 4
 
 Одним запросом получите активных покупателей, имена которых Kelly или Willie. 
@@ -63,7 +73,31 @@ FROM customer WHERE first_name = 'Kelly' OR first_name = 'Willie';
 
 Выведите Email каждого покупателя, разделив значение Email на две отдельных колонки: в первой колонке должно быть значение, указанное до @, во второй — значение, указанное после @.
 
+`Ответ:`
+
+```
+
+SELECT REGEXP_REPLACE(email,'@(.*)',''), REGEXP_REPLACE(email,'(.*)@',''),email  FROM customer;
+
+```
+
+![Снимок экрана от 2023-02-07 14-33-01](https://user-images.githubusercontent.com/75438030/217233921-21373837-2f02-46e6-842a-d56340bc7cf1.png)
+
+
 ### Задание 6*
 
 Доработайте запрос из предыдущего задания, скорректируйте значения в новых колонках: первая буква должна быть заглавной, остальные — строчными.
 
+`Ответ:`
+
+```
+SELECT 
+CONCAT(UPPER( LEFT (LCASE(REGEXP_REPLACE(email,'@(.*)','')),1)), SUBSTRING(LCASE(REGEXP_REPLACE(email,'@(.*)','')),2)), 
+CONCAT(UPPER( LEFT (REGEXP_REPLACE(email,'(.*)@',''),1)),  
+SUBSTRING(REGEXP_REPLACE(email,'(.*)@',''),2)  ),email  FROM customer;
+
+```
+
+![Снимок экрана от 2023-02-07 15-07-29](https://user-images.githubusercontent.com/75438030/217240838-e271fcd2-abb3-45ff-bdd9-85a29d3d10a4.png)
+
+---
