@@ -63,6 +63,23 @@ MONTH(payment_date) ORDER BY full_summ DESC;
 
 Посчитайте количество продаж, выполненных каждым продавцом. Добавьте вычисляемую колонку «Премия». Если количество продаж превышает 8000, то значение в колонке будет «Да», иначе должно быть значение «Нет».
 
+`Ответ:`
+
+```
+SELECT staff.staff_id, staff.first_name, staff.last_name, COUNT(payment.payment_id) AS sales,
+	CASE
+		WHEN COUNT(payment.payment_id) > 8000 THEN 'YES'
+		WHEN COUNT(payment.payment_id) < 8000 THEN 'NO'
+	END AS premium
+FROM payment
+INNER JOIN staff ON payment.staff_id = staff.staff_id
+GROUP BY staff.staff_id;
+
+```
+
+![Снимок экрана от 2023-02-07 22-40-33](https://user-images.githubusercontent.com/75438030/217348333-39e2df58-57a7-4241-ab62-28dfa2fcd0fa.png)
+
+
 ### Задание 5*
 
 Найдите фильмы, которые ни разу не брали в аренду.
