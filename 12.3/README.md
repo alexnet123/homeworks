@@ -32,6 +32,15 @@ SELECT * FROM payment WHERE payment_date BETWEEN '2005-06-15' AND '2005-06-19' A
 
 ![Снимок экрана от 2023-02-06 00-42-24](https://user-images.githubusercontent.com/75438030/216847702-ccb1e46c-d7e8-4f0f-b285-bb9dd62b3c54.png)
 
+:triangular_flag_on_post:`Исправил:`
+
+```
+SELECT * FROM payment WHERE payment_date BETWEEN '2005-06-15 00:00:00' AND '2005-06-18 23:59:59' AND amount  > 10.00;
+
+```
+
+![Снимок экрана от 2023-02-07 23-14-51](https://user-images.githubusercontent.com/75438030/217355107-ac56a1c5-531f-41be-8737-4dc4f5678ddb.png)
+
 
 ### Задание 3
 
