@@ -45,6 +45,17 @@ SELECT * FROM payment WHERE payment_date BETWEEN '2005-06-15' AND '2005-06-19' A
 - все буквы в фамилии и имени из верхнего регистра переведите в нижний регистр,
 - замените буквы 'll' в именах на 'pp'.
 
+`Ответ:`
+
+```
+SELECT customer_id ,store_id,REPLACE(LCASE(first_name),'ll', 'pp'),LCASE(last_name),email,address_id, active,create_date,last_update 
+FROM customer WHERE first_name = 'Kelly' OR first_name = 'Willie';
+
+```
+
+![Снимок экрана от 2023-02-07 14-10-17](https://user-images.githubusercontent.com/75438030/217229172-b7465217-2d3b-42c1-9bab-98a95ec713ed.png)
+
+
 ## Дополнительные задания (со звёздочкой*)
 Эти задания дополнительные, то есть не обязательные к выполнению, и никак не повлияют на получение вами зачёта по этому домашнему заданию. Вы можете их выполнить, если хотите глубже шире разобраться в материале.
 
