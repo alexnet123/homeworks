@@ -11,6 +11,21 @@
 - город нахождения магазина;
 - количество пользователей, закреплённых в этом магазине.
 
+`Ответ:`
+
+```
+SELECT  staff.first_name, staff.last_name, city.city, COUNT(customer.customer_id) AS user_count
+FROM store 
+INNER JOIN staff ON store.manager_staff_id  = staff.staff_id
+INNER JOIN address ON store.address_id = address.address_id
+INNER JOIN customer ON store.store_id = customer.store_id
+INNER JOIN city ON address.city_id = city.city_id 
+GROUP BY store.store_id
+HAVING user_count > 300;
+
+```
+![Снимок экрана от 2023-02-07 21-33-25](https://user-images.githubusercontent.com/75438030/217334719-df47bdbb-8f01-433d-b335-50a53c473a53.png)
+
 ### Задание 2
 
 Получите количество фильмов, продолжительность которых больше средней продолжительности всех фильмов.
