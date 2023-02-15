@@ -1,0 +1,239 @@
+####################################################################################################
+# Install Docker+Mysql debian11
+####################################################################################################
+
+  - name: "Play Docker Debian on x86_64 / amd64, armhf, arm64, and Raspbian"
+    hosts: servers
+    vars:
+      mysql_db: sakila
+      mysql_root_password: qwertyX14
+      file_dir: /home/admin/
+      url_path: https://github.com/alexnet123/devops/blob/main/mysql/test_db/sakila-db/sakila-schema.sql
+    become: true
+    tasks:
+
+      - name: Install aptitude
+        apt:
+          name: aptitude
+          state: latest
+          update_cache: true
+  
+      - name: Install required system packages
+        apt:
+          pkg:
+            - apt-transport-https
+            - ca-certificates
+            - curl
+            - software-properties-common
+            - python3-pip
+            #- virtualenv
+            - python3-setuptools
+            - gnupg
+            - lsb-release
+            - mariadb-client
+          state: latest
+          update_cache: true
+  
+      - name: Add Docker GPG apt Key
+        apt_key:
+          url: https://download.docker.com/linux/ubuntu/gpg
+          state: present
+  
+      - name: Add Docker Repository
+        apt_repository:
+          repo: deb https://download.docker.com/linux/ubuntu focal stable
+          state: present
+  
+      - name: Install Docker
+        apt:
+          name:
+            - docker
+            - docker.io
+            - docker-compose
+            - docker-registry
+            - unzip
+            - python3-pip
+          state: latest
+          update_cache: true  
+      
+      - name: Creates directory /home/mysql-master/datadir
+        file:
+          path: /home/mysql-master/datadir
+          state: directory
+          mode: 0775
+      
+      - name: Creates directory /home/mysql-master/confdir
+        file:
+          path: /home/mysql-master/confdir
+          state: directory
+          mode: 0775
+      
+      - name: Creates directory /home/mysql-slave/datadir
+        file:
+          path: /home/mysql-slave/datadir
+          state: directory
+          mode: 0775
+
+      - name: Creates directory /home/mysql-slave/confdir
+        file:
+          path: /home/mysql-slave/confdir
+          state: directory
+          mode: 0775
+
+      - name: Creates file /home/mysql-slave/confdir/my.cnf
+        file:
+          path: /home/mysql-slave/confdir/my.cnf
+          state: touch
+
+      
+      - name: Creates file /home/mysql-master/confdir/my.cnf
+        file:
+          path: /home/mysql-master/confdir/my.cnf
+          state: touch
+        
+
+      - name: Creating  content slave
+        copy:
+          dest: "/home/mysql-slave/confdir/my.cnf"
+          content: |
+            # For advice on how to change settings please see
+            # http://dev.mysql.com/doc/refman/8.0/en/server-configuration-defaults.html
+            
+            [mysqld]
+            #
+            # Remove leading # and set to the amount of RAM for the most important data
+            # cache in MySQL. Start at 70% of total RAM for dedicated server, else 10%.
+            # innodb_buffer_pool_size = 128M
+            #
+            # Remove leading # to turn on a very important data integrity option: logging
+            # changes to the binary log between backups.
+            # log_bin
+            #
+            # Remove leading # to set options mainly useful for reporting servers.
+            # The server defaults are faster for transactions and fast SELECTs.
+            # Adjust sizes as needed, experiment to find the optimal values.
+            # join_buffer_size = 128M
+            # sort_buffer_size = 2M
+            # read_rnd_buffer_size = 2M
+            
+            # Remove leading # to revert to previous value for default_authentication_plugin,
+            # this will increase compatibility with older clients. For background, see:
+            # https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin
+            # default-authentication-plugin=mysql_native_password
+            
+            log_bin = /var/lib/mysql/mysql-bin.log
+            server_id = 2
+            relay-log = /var/lib/mysql/mysql-relay-bin
+            relay-log-index = /var/lib/mysql/mysql-relay-bin.index
+            read_only = 1 
+            binlog_do_db = {{ mysql_db }}
+            
+            skip-host-cache
+            skip-name-resolve
+            datadir=/var/lib/mysql
+            socket=/var/run/mysqld/mysqld.sock
+            secure-file-priv=/var/lib/mysql-files
+            user=mysql
+            
+            pid-file=/var/run/mysqld/mysqld.pid
+            [client]
+            socket=/var/run/mysqld/mysqld.sock
+            
+            !includedir /etc/mysql/conf.d/
+
+      - name: Creating  content master
+        copy:
+          dest: "/home/mysql-master/confdir/my.cnf"
+          content: |
+            # For advice on how to change settings please see
+            # http://dev.mysql.com/doc/refman/8.0/en/server-configuration-defaults.html
+            
+            [mysqld]
+            #
+            # Remove leading # and set to the amount of RAM for the most important data
+            # cache in MySQL. Start at 70% of total RAM for dedicated server, else 10%.
+            # innodb_buffer_pool_size = 128M
+            #
+            # Remove leading # to turn on a very important data integrity option: logging
+            # changes to the binary log between backups.
+            # log_bin
+            #
+            # Remove leading # to set options mainly useful for reporting servers.
+            # The server defaults are faster for transactions and fast SELECTs.
+            # Adjust sizes as needed, experiment to find the optimal values.
+            # join_buffer_size = 128M
+            # sort_buffer_size = 2M
+            # read_rnd_buffer_size = 2M
+            
+            # Remove leading # to revert to previous value for default_authentication_plugin,
+            # this will increase compatibility with older clients. For background, see:
+            # https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin
+            # default-authentication-plugin=mysql_native_password
+            
+            server_id = 1
+            log_bin = /var/lib/mysql/mysql-bin.log
+            binlog_do_db = {{ mysql_db }}
+            
+            skip-host-cache
+            skip-name-resolve
+            datadir=/var/lib/mysql
+            socket=/var/run/mysqld/mysqld.sock
+            secure-file-priv=/var/lib/mysql-files
+            user=mysql
+            
+            pid-file=/var/run/mysqld/mysqld.pid
+            [client]
+            socket=/var/run/mysqld/mysqld.sock
+            
+            !includedir /etc/mysql/conf.d/
+
+
+      - name: Container mysql-master present 
+        docker_container:
+          name: mysql-master
+          state: started
+          restart_policy: unless-stopped
+          image: mysql:8.0
+          volumes:
+            - /home/mysql-master/datadir:/var/lib/mysql
+            - /home/mysql-master/confdir/my.cnf:/etc/my.cnf
+          env:
+            MYSQL_ROOT_HOST: "%"
+            MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"
+            MYSQL_USER: test
+            MYSQL_PASSWORD: qwertyX14
+            MYSQL_DATABASE: "{{ mysql_db }}"
+            MYSQL_HOST: "%"
+          # ports:
+          #   - "3306:3306"
+
+      - name: Container mysql-slave present 
+        docker_container:
+          name: mysql-slave
+          state: started
+          restart_policy: unless-stopped
+          image: mysql:8.0
+          volumes:
+            - /home/mysql-slave/datadir:/var/lib/mysql
+            - /home/mysql-slave/confdir/my.cnf:/etc/my.cnf
+          env:
+            MYSQL_ROOT_HOST: "%"
+            MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"
+            MYSQL_USER: test
+            MYSQL_PASSWORD: qwertyX14
+            MYSQL_DATABASE: "{{ mysql_db }}"
+            MYSQL_HOST: "%"
+          # ports:
+          #   - "3306:3306"
+      
+      - name: Create a network replication
+        docker_network:
+          name: replication
+
+      - name: Add a container to a network, leaving existing containers connected
+        docker_network:
+          name: replication
+          connected:
+            - mysql-master
+            - mysql-slave
+          appends: yes
