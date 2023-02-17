@@ -90,12 +90,26 @@ mysql -u root -p'pass' -h 172.20.0.15 -e "CREATE DATABASE library;"
 mysql -u root -p'pass' -h 172.20.0.15 -e "USE library; CREATE TABLE books ( bookid INTEGER PRIMARY KEY, title VARCHAR(255), author VARCHAR(255), numberof_pages INTEGER );"
 ```
 
-## Дополнительные задания (со звёздочкой*)
-Эти задания дополнительные, то есть не обязательные к выполнению, и никак не повлияют на получение вами зачёта по этому домашнему заданию. Вы можете их выполнить, если хотите глубже шире разобраться в материале.
+### Горизонтальный шардинг
+`db one`
 
----
-### Задание 3*
+```
+mysql -u root -p'pass' -h 172.20.0.12 -e "CREATE DATABASE library;"
 
-Выполните настройку выбранных методов шардинга из задания 2.
+mysql -u root -p'pass' -h 172.20.0.12 -e "USE library; CREATE TABLE users ( user_id INTEGER PRIMARY KEY, username VARCHAR(255) );"
 
-*Пришлите конфиг Docker и SQL скрипт с командами для базы данных*.
+mysql -u root -p'pass' -h 172.20.0.12 -e "USE library; CREATE TABLE books ( bookid INTEGER PRIMARY KEY, title VARCHAR(255), author VARCHAR(255), numberof_pages INTEGER );"
+
+mysql -u root -p'pass' -h 172.20.0.12 -e "USE library; CREATE TABLE stores ( storeid INTEGER PRIMARY KEY, name VARCHAR(255), address VARCHAR(255), phone VARCHAR(255), numberof_employees INTEGER );"
+```
+`db two`
+
+```
+mysql -u root -p'pass' -h 172.20.0.15 -e "CREATE DATABASE library;"
+
+mysql -u root -p'pass' -h 172.20.0.15 -e "USE library; CREATE TABLE users ( user_id INTEGER PRIMARY KEY, username VARCHAR(255) );"
+
+mysql -u root -p'pass' -h 172.20.0.15 -e "USE library; CREATE TABLE books ( bookid INTEGER PRIMARY KEY, title VARCHAR(255), author VARCHAR(255), numberof_pages INTEGER );"
+
+mysql -u root -p'pass' -h 172.20.0.15 -e "USE library; CREATE TABLE stores ( storeid INTEGER PRIMARY KEY, name VARCHAR(255), address VARCHAR(255), phone VARCHAR(255), numberof_employees INTEGER );"
+```
