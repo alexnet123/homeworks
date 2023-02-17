@@ -58,6 +58,12 @@ CREATE TABLE stores ( storeid INTEGER PRIMARY KEY, name VARCHAR(255), address VA
 
 ### Вертикальный шардинг
 
+`Запуск контейнеров`
+
+```
+docker-compose -f docker-compose/mysql.yml up -d
+```
+
 `Проверь работу контейнеров`
 
 ```
