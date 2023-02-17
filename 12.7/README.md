@@ -1,0 +1,101 @@
+# Домашнее задание к занятию "`12.7. «Репликация и масштабирование. Часть 2`" - `Вахрамеев А.В.`
+
+---
+
+### Задание 1
+
+Опишите основные преимущества использования масштабирования методами:
+
+- активный master-сервер и пассивный репликационный slave-сервер; 
+- master-сервер и несколько slave-серверов;
+- активный сервер со специальным механизмом репликации — distributed replicated block device (DRBD);
+- SAN-кластер.
+
+*Дайте ответ в свободной форме.*
+
+---
+
+### Задание 2
+
+
+Разработайте план для выполнения горизонтального и вертикального шаринга базы данных. База данных состоит из трёх таблиц: 
+
+- пользователи, 
+- книги, 
+- магазины (столбцы произвольно). 
+
+Опишите принципы построения системы и их разграничение или разбивку между базами данных.
+
+*Пришлите блоксхему, где и что будет располагаться. Опишите, в каких режимах будут работать сервера.* 
+
+`Ответ:`
+
+---
+
+`К примеру можно взять такую БД`
+```
+CREATE DATABASE library;
+
+USE library;
+
+CREATE TABLE users ( user_id INTEGER PRIMARY KEY, username VARCHAR(255) );
+
+CREATE TABLE books ( bookid INTEGER PRIMARY KEY, title VARCHAR(255), author VARCHAR(255), numberof_pages INTEGER );
+
+CREATE TABLE stores ( storeid INTEGER PRIMARY KEY, name VARCHAR(255), address VARCHAR(255), phone VARCHAR(255), numberof_employees INTEGER );
+```
+
+### Вертикальный шардинг
+
+`Проверь работу контейнеров`
+
+```
+root@mysql:/home/admin# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                               NAMES
+9cefd13fbeea   mysql     "docker-entrypoint.s…"   16 minutes ago   Up 16 minutes   33060/tcp, 0.0.0.0:3003->3306/tcp   db_one
+6d1e61b6ff9f   mysql     "docker-entrypoint.s…"   16 minutes ago   Up 16 minutes   33060/tcp, 0.0.0.0:3004->3306/tcp   db_two
+
+
+root@mysql:/home/admin# docker network ls
+NETWORK ID     NAME             DRIVER    SCOPE
+15e51dc924ac   bridge           bridge    local
+3590553b8bb2   g_mysql_db_net   bridge    local
+1ed71962919c   host             host      local
+d981a8ed5b44   none             null      local
+root@mysql:/home/admin# docker container inspect -f '{{ .NetworkSettings.Networks.g_mysql_db_net.IPAddress }}' db_one
+172.20.0.12
+root@mysql:/home/admin# docker container inspect -f '{{ .NetworkSettings.Networks.g_mysql_db_net.IPAddress }}' db_two
+172.20.0.15
+root@mysql:/home/admin# 
+
+```
+
+`db one`
+
+```
+mysql -u root -p'pass' -h 172.20.0.12 -e "CREATE DATABASE library;"
+
+mysql -u root -p'pass' -h 172.20.0.12 -e "USE library; CREATE TABLE users ( user_id INTEGER PRIMARY KEY, username VARCHAR(255) );"
+
+mysql -u root -p'pass' -h 172.20.0.12 -e "USE library; 
+CREATE TABLE stores ( storeid INTEGER PRIMARY KEY, name VARCHAR(255), address VARCHAR(255), phone VARCHAR(255), numberof_employees INTEGER );"
+```
+
+
+`db two`
+
+```
+mysql -u root -p'pass' -h 172.20.0.15 -e "CREATE DATABASE library;"
+
+mysql -u root -p'pass' -h 172.20.0.15 -e "USE library; CREATE TABLE books ( bookid INTEGER PRIMARY KEY, title VARCHAR(255), author VARCHAR(255), numberof_pages INTEGER );"
+```
+
+## Дополнительные задания (со звёздочкой*)
+Эти задания дополнительные, то есть не обязательные к выполнению, и никак не повлияют на получение вами зачёта по этому домашнему заданию. Вы можете их выполнить, если хотите глубже шире разобраться в материале.
+
+---
+### Задание 3*
+
+Выполните настройку выбранных методов шардинга из задания 2.
+
+*Пришлите конфиг Docker и SQL скрипт с командами для базы данных*.
