@@ -25,6 +25,7 @@
             - python3-setuptools
             - gnupg
             - lsb-release
+            - mariadb-client
           state: latest
           update_cache: true
   
