@@ -23,10 +23,13 @@
 ```
 select case when pg_is_in_recovery() then 'REPLICA' else 'MASTER' end;
 ```
+![Снимок экрана от 2023-02-21 22-28-30](https://user-images.githubusercontent.com/75438030/220440294-ec81be33-3cfb-4598-9398-e913795ff9d6.png)
+
 * Посмотрите количество подключенных реплик:
 ```
 select count(*) from pg_stat_replication;
 ```
+![Снимок экрана от 2023-02-21 22-29-11](https://user-images.githubusercontent.com/75438030/220440392-d539e347-3fb6-4235-83b1-9d76ff9199ce.png)
 
 ### Проверьте работоспособность репликации в кластере
 
@@ -38,14 +41,21 @@ CREATE TABLE test_table(text varchar);
 insert into test_table values('Строка 1');
 ```
 
+![Снимок экрана от 2023-02-21 22-31-28](https://user-images.githubusercontent.com/75438030/220440813-96bd3e82-518f-4327-9a18-127ba976fe60.png)
+
 * Выйдите из psql командой ```\q```.
 
 * Теперь подключитесь к узлу-реплике. Для этого из команды подключения удалите атрибут ```target_session_attrs```  и в параметре атрибут ```host``` передайте только имя хоста-реплики. Роли хостов можно посмотреть на соответствующей вкладке UI консоли.
+
+![Снимок экрана от 2023-02-21 22-41-11](https://user-images.githubusercontent.com/75438030/220442719-23b6dba4-dc31-41aa-8a79-54d5719d084c.png)
+
 
 * Проверьте, что подключение прошло к узлу-реплике.
 ```
 select case when pg_is_in_recovery() then 'REPLICA' else 'MASTER' end;
 ```
+![Снимок экрана от 2023-02-21 22-37-56](https://user-images.githubusercontent.com/75438030/220442141-9811ec8b-14e0-4634-b3d6-0fdac6cda1db.png)
+
 * Проверьте состояние репликации
 ```
 select status from pg_stat_wal_receiver;
@@ -55,6 +65,8 @@ select status from pg_stat_wal_receiver;
 ```
 select * from test_table;
 ```
+
+![Снимок экрана от 2023-02-21 22-40-23](https://user-images.githubusercontent.com/75438030/220442528-87908721-2c2a-4deb-b38a-d491f07a37dc.png)
 
 *В качестве результата вашей работы пришлите скриншоты:*
 
