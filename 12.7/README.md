@@ -86,6 +86,9 @@ root@mysql:/home/admin#
 
 ```
 
+![Снимок экрана от 2023-02-25 06-43-35](https://user-images.githubusercontent.com/75438030/221334433-15452aec-d249-41b2-8385-3cf09cf734bc.png)
+
+
 `db one`
 
 ```
@@ -107,6 +110,10 @@ mysql -u root -p'pass' -h 172.20.0.15 -e "USE library; CREATE TABLE books ( book
 ```
 
 ### Горизонтальный шардинг
+
+![Снимок экрана от 2023-02-25 06-49-30](https://user-images.githubusercontent.com/75438030/221334623-45eb02dd-54e6-4e19-ba39-e4fef6f74e90.png)
+
+
 `db one`
 
 ```
