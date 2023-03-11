@@ -1,14 +1,4 @@
-# Домашнее задание к занятию 13.3. «Защита сети»
-
-**Домашнее задание выполните в Google Docs или в md-файле в вашем репозитории GitHub.** 
-
-Для оформления вашего решения в GitHub можете воспользоваться [шаблоном](https://github.com/netology-code/sys-pattern-homework).
-
-Название файла Google Docs должно содержать номер лекции и фамилию студента. Пример названия: «13.2. Защита хоста — Александр Александров».
-
-Перед тем как выслать ссылку, убедитесь, что её содержимое не является приватным, то есть открыто на просмотр всем, у кого есть ссылка. Если необходимо прикрепить дополнительные ссылки, просто добавьте их в свой Google Docs.
-
-Любые вопросы по решению задач задавайте в чате учебной группы.
+# Домашнее задание к занятию "`13.3. «Защита сети»`" - `Вахрамеев А.В.`
 
 ------
 
@@ -29,13 +19,56 @@
 
 Проведите разведку системы и определите, какие сетевые службы запущены на защищаемой системе:
 
+`Ответ:`
+
 **sudo nmap -sA < ip-адрес >**
+
+```
+Без логов
+
+```
 
 **sudo nmap -sT < ip-адрес >**
 
+```
+suricata
+
+03/11/2023-15:04:46.778293  [**] [1:2010937:3] ET SCAN Suspicious inbound to mySQL port 3306 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:58112 -> 10.128.0.20:3306
+03/11/2023-15:04:46.796113  [**] [1:2010939:3] ET SCAN Suspicious inbound to PostgreSQL port 5432 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:58778 -> 10.128.0.20:5432
+03/11/2023-15:04:46.805840  [**] [1:2010936:3] ET SCAN Suspicious inbound to Oracle SQL port 1521 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:48228 -> 10.128.0.20:1521
+03/11/2023-15:04:46.806556  [**] [1:2010935:3] ET SCAN Suspicious inbound to MSSQL port 1433 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:60288 -> 10.128.0.20:1433
+
+```
 **sudo nmap -sS < ip-адрес >**
 
+```
+suricata
+
+03/11/2023-15:05:25.529611  [**] [1:2010937:3] ET SCAN Suspicious inbound to mySQL port 3306 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:49611 -> 10.128.0.20:3306
+03/11/2023-15:05:25.533669  [**] [1:2010935:3] ET SCAN Suspicious inbound to MSSQL port 1433 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:49611 -> 10.128.0.20:1433
+03/11/2023-15:05:25.533965  [**] [1:2010939:3] ET SCAN Suspicious inbound to PostgreSQL port 5432 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:49611 -> 10.128.0.20:5432
+03/11/2023-15:05:25.541917  [**] [1:2010936:3] ET SCAN Suspicious inbound to Oracle SQL port 1521 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:49611 -> 10.128.0.20:1521
+03/11/2023-15:05:25.551953  [**] [1:2002911:6] ET SCAN Potential VNC Scan 5900-5920 [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 10.128.0.8:49611 -> 10.128.0.20:5915
+03/11/2023-15:05:25.568914  [**] [1:2002910:6] ET SCAN Potential VNC Scan 5800-5820 [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 10.128.0.8:49611 -> 10.128.0.20:5811
+
+```
+
 **sudo nmap -sV < ip-адрес >**
+
+```
+suricata
+
+03/11/2023-15:06:08.537997  [**] [1:2010937:3] ET SCAN Suspicious inbound to mySQL port 3306 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:64706 -> 10.128.0.20:3306
+03/11/2023-15:06:08.545162  [**] [1:2010936:3] ET SCAN Suspicious inbound to Oracle SQL port 1521 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:64706 -> 10.128.0.20:1521
+03/11/2023-15:06:08.545731  [**] [1:2010939:3] ET SCAN Suspicious inbound to PostgreSQL port 5432 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:64706 -> 10.128.0.20:5432
+03/11/2023-15:06:08.574418  [**] [1:2010935:3] ET SCAN Suspicious inbound to MSSQL port 1433 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:64706 -> 10.128.0.20:1433
+
+fail2ban
+
+Mar 11 15:06:08 suricata sshd[3669]: error: kex_exchange_identification: Connection closed by remote host
+Mar 11 15:06:08 suricata sshd[3669]: Connection closed by 10.128.0.8 port 39718
+
+```
 
 По желанию можете поэкспериментировать с опциями: https://nmap.org/man/ru/man-briefoptions.html.
 
@@ -63,8 +96,35 @@
 -  найти секцию **ssh**,
 -  установить **enabled**  в **true**.
 
+
 Дополнительная информация по **Fail2Ban**:https://putty.org.ru/articles/fail2ban-ssh.html.
 
+`Ответ:`
+
+`f2ban`
+
+```
+Mar 11 16:04:47 suricata sshd[3905]: Failed password for invalid user ftp from 1.4.188.240 port 35347 ssh2
+Mar 11 16:04:48 suricata sshd[3905]: pam_unix(sshd:auth): check pass; user unknown
+Mar 11 16:04:48 suricata sshd[3909]: Failed password for root from 10.128.0.8 port 35568 ssh2
+Mar 11 16:04:48 suricata sshd[3911]: Failed password for root from 10.128.0.8 port 35578 ssh2
+Mar 11 16:04:48 suricata sshd[3913]: Failed password for root from 10.128.0.8 port 35590 ssh2
+Mar 11 16:04:48 suricata sshd[3915]: Failed password for root from 10.128.0.8 port 35592 ssh2
+Mar 11 16:04:50 suricata sshd[3905]: Failed password for invalid user ftp from 1.4.188.240 port 35347 ssh2
+Mar 11 16:04:51 suricata sshd[3909]: Failed password for root from 10.128.0.8 port 35568 ssh2
+Mar 11 16:04:51 suricata sshd[3911]: Failed password for root from 10.128.0.8 port 35578 ssh2
+Mar 11 16:04:51 suricata sshd[3913]: Failed password for root from 10.128.0.8 port 35590 ssh2
+Mar 11 16:04:51 suricata sshd[3915]: Failed password for root from 10.128.0.8 port 35592 ssh2
+
+```
+
+`suricata`
+
+```
+03/11/2023-16:03:12.426837  [**] [1:2001219:20] ET SCAN Potential SSH Scan [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 10.128.0.8:44970 -> 10.128.0.20:22
+03/11/2023-16:03:12.426837  [**] [1:2003068:7] ET SCAN Potential SSH Scan OUTBOUND [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 10.128.0.8:44970 -> 10.128.0.20:22
+03/11/2023-16:04:46.469424  [**] [1:2003068:7] ET SCAN Potential SSH Scan OUTBOUND [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 10.128.0.8:35568 -> 10.128.0.20:22
+
+```
 
 
-*В качестве ответа пришлите события, которые попали в логи Suricata и Fail2Ban, прокомментируйте результат.*
