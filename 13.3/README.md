@@ -21,6 +21,8 @@
 
 `Ответ:`
 
+Атаку проводил с ip 10.128.0.20
+
 **sudo nmap -sA < ip-адрес >**
 
 ```
@@ -47,7 +49,7 @@ suricata
 03/11/2023-15:05:25.529611  [**] [1:2010937:3] ET SCAN Suspicious inbound to mySQL port 3306 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:49611 -> 10.128.0.20:3306
 03/11/2023-15:05:25.533669  [**] [1:2010935:3] ET SCAN Suspicious inbound to MSSQL port 1433 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:49611 -> 10.128.0.20:1433
 03/11/2023-15:05:25.533965  [**] [1:2010939:3] ET SCAN Suspicious inbound to PostgreSQL port 5432 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:49611 -> 10.128.0.20:5432
-03/11/2023-15:05:25.541917  [**] [1:2010936:3] ET SCAN Suspicious inbound to Oracle SQL port 1521 [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:49611 -> 10.128.0.20:1521
+03/11/2023-15:05:25.541917  [**] [1:2010936:3] ET SCAN Suspicious inbound to  [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.128.0.8:49611 -> 10.128.0.20:1521
 03/11/2023-15:05:25.551953  [**] [1:2002911:6] ET SCAN Potential VNC Scan 5900-5920 [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 10.128.0.8:49611 -> 10.128.0.20:5915
 03/11/2023-15:05:25.568914  [**] [1:2002910:6] ET SCAN Potential VNC Scan 5800-5820 [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 10.128.0.8:49611 -> 10.128.0.20:5811
 
@@ -70,10 +72,9 @@ Mar 11 15:06:08 suricata sshd[3669]: Connection closed by 10.128.0.8 port 39718
 
 ```
 
-По желанию можете поэкспериментировать с опциями: https://nmap.org/man/ru/man-briefoptions.html.
+Журналы показывают подозрительный входящий трафик на сервере с IP-адресом 10.128.0.20. В частности, существуют предупреждения о трафике на портах, обычно используемых серверами баз данных: MySQL (порт 3306), Oracle SQL (порт 1521), PostgreSQL (порт 5432),Oracle SQL port 1521, VNC и MSSQL (порт 1433). Оповещения указывают, что трафик потенциально плохой, а приоритет оповещений оценивается как 2.
 
-
-*В качестве ответа пришлите события, которые попали в логи Suricata и Fail2Ban, прокомментируйте результат.*
+Кроме того, в журнале fail2ban есть сообщение об ошибке, указывающее на то, что соединение с сервером SSH было закрыто удаленным хостом с IP-адресом 10.128.0.8, что соответствует IP-адресу источника подозрительного трафика, обнаруженного Suricata. Это говорит о том, что удаленный хост попытался подключиться к SSH-серверу, но не смог установить соединение.
 
 ------
 
