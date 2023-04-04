@@ -1,1 +1,1 @@
-# Домашнее задание к занятию "`GIT №3`" - `Вахрамеев А.В.`
+https://github.com/alexnet123/git_3/blob/main/README.md
