@@ -1,0 +1,28 @@
+{
+  "builders": [
+    {
+      "type":      "yandex",
+      "token":     "{{user `token`}}",
+      "folder_id": "{{user `folder_id`}}",
+      "zone":      "ru-central1-a",
+
+      "image_name":        "centos-8-python3-{{isotime | clean_resource_name}}",
+      "image_family":      "centos-8-py3",
+      "image_description": "My CentOS 8 image with Python 3",
+
+      "source_image_family": "centos-stream-8",
+      "subnet_id":           "e9bfmm7ivb3taj5c2qi0",
+      "use_ipv4_nat":        true,
+      "disk_type":           "network-ssd",
+      "ssh_username":        "cloud-user"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sudo -s yum install -yq python3"
+      ]
+    }
+  ]
+}
