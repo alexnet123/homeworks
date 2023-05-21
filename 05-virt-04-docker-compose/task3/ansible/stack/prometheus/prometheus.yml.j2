@@ -16,7 +16,10 @@ scrape_configs:
   - job_name: 'nodeexporter'
     scrape_interval: 5s
     static_configs:
-      - targets: ['nodeexporter:9100']
+      - targets:
+        - nodeexporter:9100
+        - "{{ hostvars['node020-ru-central1-a']['ansible_host'] }}:9100"
+
 
   - job_name: 'cadvisor'
     scrape_interval: 5s

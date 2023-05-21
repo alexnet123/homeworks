@@ -51,8 +51,24 @@
           mode: 0644
         become: true
 
-      - name: Pull all images in compose
-        command: docker-compose -f /opt/stack/docker-compose.yaml pull
+      - name: Copy prometheus.yml
+        template:
+          src: stack/prometheus/prometheus.yml.j2
+          dest: /opt/stack/prometheus/prometheus.yml
+        when: inventory_hostname in groups['node01']
 
-      - name: Up all services in compose
+      - name: Pull all images in compose node01
+        command: docker-compose -f /opt/stack/docker-compose.yaml pull
+        when: inventory_hostname in groups['node01']
+
+      - name: Up all services in compose node01
         command: docker-compose -f /opt/stack/docker-compose.yaml up -d
+        when: inventory_hostname in groups['node01']
+
+      - name: Pull all images in compose node02
+        command: docker-compose -f /opt/stack/exporters/docker-compose.exporters.yaml pull
+        when: inventory_hostname in groups['node02']
+
+      - name: Up all services in compose node02
+        command: docker-compose -f /opt/stack/exporters/docker-compose.exporters.yaml up -d
+        when: inventory_hostname in groups['node02']

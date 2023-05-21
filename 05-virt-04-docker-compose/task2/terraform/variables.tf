@@ -130,3 +130,76 @@ variable "trf_node01_ipv6" {
   default = false      
 }
 #=========================================
+
+
+# VM node02
+#=========================================
+# Management ssh public key
+variable "trf_mng_node02_public_key" {
+   #type    = string
+   default = ""
+}
+
+# Yandex cloud hardware platform 
+# ( "standard-v3" = #Intel Ice Lake)
+variable "trf_node02_platform_id" {
+  type    = string
+  default = "standard-v3"
+}
+
+# vm name
+variable "trf_node02_name" {
+  type    = string
+  default = "node02"      
+}
+
+# vm count
+variable "trf_node02_count" {
+  type    = string
+  default = "1"      
+}
+
+# vm user
+variable "trf_node02_user" {
+  type    = string
+  default = "admin"      
+}
+
+# vm memory 
+variable "trf_node02_memory" {
+  type    = string
+  default = "2"      
+}
+
+# vm cpu
+variable "trf_node02_cores" {
+  type    = string
+  default = "2"      
+}
+
+# vm disc size
+variable "trf_node02_disc_size" {
+  type    = string
+  default = "10"      
+}
+
+# Yandex cloud vm image id 
+# ("fd8j8m926pr7bbo0ckco" = Debian 10)
+# (fd8t5pejlu5ltqm4mvkv = CentOS Stream )
+# (fd86011gghoc98v0cdvs = CentOS 8 Stream + python)
+variable "trf_node02_image_id" {
+  type    = string
+  default = "fd86011gghoc98v0cdvs"
+}
+
+# Yandex cloud NAT
+variable "trf_node02_nat" {
+  type    = bool
+  default = true      
+}
+# ipv6 
+variable "trf_node02_ipv6" {
+  type    = bool
+  default = false      
+}
+#=========================================
