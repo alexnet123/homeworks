@@ -1,0 +1,11 @@
+---
+
+- hosts: all
+  become: true
+  
+  tasks:
+    - name: node01
+      include_tasks: provision.yml
+      when: ansible_os_family == 'RedHat'
+
+...

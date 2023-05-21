@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Yandex folder_id
+export TRF_VAR_folder_id='XXXXXXXXXXXXXXXXXXXXXXX'
+# Yandex cloud_id
+export TRF_VAR_cloud_id='XXXXXXXXXXXXXXXXXXXXXXXX'
+# Yandex token
+export TRF_VAR_token='XXXXXXXXXXXXXXXXXXXXXXXXXXX'
+# SSH public key (Linux машины) где запускается проект
+export TRF_VAR_trf_mng_public_key=$(cat /root/.ssh/id_rsa.pub)
+
+
+# TF_CLI_TIMEOUT=15m - Время прерывания terraform apply
+
+# Переходим в папку terraform
+cd task2/terraform
+TF_CLI_TIMEOUT=15m terraform apply \
+ -var "trf_folder_id=${TRF_VAR_folder_id}" \
+ -var "trf_cloud_id=${TRF_VAR_cloud_id}" \
+ -var "trf_token=${TRF_VAR_token}" \
+ -var "trf_mng_node01_public_key=${TRF_VAR_trf_mng_public_key}" 
+
+
+
+# Задержка перед запуском ansible-playbook
+echo 'sleep 30'
+sleep 30
+
+# Установка ПО на сервера 
+cd ..
+cd ..
+cd task3/ansible
+ansible-playbook -i hosts  start.yml
+

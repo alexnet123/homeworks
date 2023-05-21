@@ -1,0 +1,4 @@
+[node01]
+%{ for instance in yandex_compute_instance_node01 ~}
+${instance.name} ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_host=${instance.network_interface.0.nat_ip_address} ansible_user=${user_node01} ansible_python_interpreter=/usr/bin/python3
+%{ endfor }
