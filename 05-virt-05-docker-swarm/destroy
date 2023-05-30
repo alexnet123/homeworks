@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Yandex folder_id
+export TRF_VAR_folder_id='XXXXXXXXXXXXXXXXXXXX'
+# Yandex cloud_id
+export TRF_VAR_cloud_id='XXXXXXXXXXXXXXXXXXXX'
+# Yandex token
+export TRF_VAR_token='XXXXXXXXXXXXXXXXXXXX'
+
+cd src/terraform
+terraform destroy  \
+ -var "trf_folder_id=${TRF_VAR_folder_id}"  \
+ -var "trf_cloud_id=${TRF_VAR_cloud_id}"  \
+ -var "trf_token=${TRF_VAR_token}"
+

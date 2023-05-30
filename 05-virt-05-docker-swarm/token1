@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Yandex folder_id
+export TRF_VAR_folder_id='b1gq0mj5rh4up9offieh'
+# Yandex cloud_id
+export TRF_VAR_cloud_id='b1gbalrr4suqf4hapk6f'
+# Yandex token
+export TRF_VAR_token='y0_AgAAAABkbnEbAATuwQAAAADRe319HyCOnGH2Q2SiGV_TEQrlLBgz1RI'
+# SSH public key (Linux машины) где запускается проект
+export TRF_VAR_trf_mng_public_key=$(cat /root/.ssh/id_rsa.pub)
+
+# TF_CLI_TIMEOUT=15m - Время прерывания terraform apply
+
+# Переходим в папку terraform
+cd src/terraform
+TF_CLI_TIMEOUT=15m terraform apply \
+ -var "trf_folder_id=${TRF_VAR_folder_id}" \
+ -var "trf_cloud_id=${TRF_VAR_cloud_id}" \
+ -var "trf_token=${TRF_VAR_token}"
+
+
+
