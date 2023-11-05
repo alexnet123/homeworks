@@ -140,6 +140,8 @@ output "IPAddress" {
  
 ```
 
+
 ![Screenshot from 2023-11-05 06-48-07](https://github.com/alexnet123/homeworks/assets/75438030/24b7ac77-f861-4d5e-b04a-e8cd2c700b42)
+
 
 ![Screenshot from 2023-11-05 06-49-51](https://github.com/alexnet123/homeworks/assets/75438030/9485ace4-1d15-4e4b-9325-f3ad738992d4)
