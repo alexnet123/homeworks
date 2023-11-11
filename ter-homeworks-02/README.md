@@ -25,6 +25,11 @@ https://console.cloud.yandex.ru/folders/<ваш cloud_id>/vpc/security-groups.
 - скриншот успешного подключения к консоли ВМ через ssh. К OS ubuntu необходимо подключаться под пользователем ubuntu: "ssh ubuntu@vm_ip_address";
 - ответы на вопросы.
 
+![Screenshot from 2023-11-11 14-53-19](https://github.com/alexnet123/homeworks/assets/75438030/2d156b04-fba9-42f9-b676-c76b90da6f35)
+
+
+![Screenshot from 2023-11-11 14-49-03](https://github.com/alexnet123/homeworks/assets/75438030/dd0afe18-68b2-4ae8-964b-2078553bb451)
+
 
 ### Задание 2
 
@@ -47,6 +52,8 @@ https://console.cloud.yandex.ru/folders/<ваш cloud_id>/vpc/security-groups.
 2. Примените изменения.
 
 В качестве решения приложите вывод значений ip-адресов команды ```terraform output```.
+
+![Screenshot from 2023-11-11 15-10-28](https://github.com/alexnet123/homeworks/assets/75438030/a82342c5-1e54-4546-a01e-070c79403ef3)
 
 
 ### Задание 5
