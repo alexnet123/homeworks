@@ -1,17 +1,5 @@
 # Домашнее задание к занятию «Основы Terraform. Yandex Cloud» Вахрамеев А.В.
 
-### Цели задания
-
-1. Создать свои ресурсы в облаке Yandex Cloud с помощью Terraform.
-2. Освоить работу с переменными Terraform.
-
-
-### Чек-лист готовности к домашнему заданию
-
-1. Зарегистрирован аккаунт в Yandex Cloud. Использован промокод на грант.
-2. Установлен инструмент Yandex CLI.
-3. Исходный код для выполнения задания расположен в директории [**02/src**](https://github.com/netology-code/ter-homeworks/tree/main/02/src).
-
 
 ### Задание 0
 
@@ -20,9 +8,7 @@
 https://console.cloud.yandex.ru/folders/<ваш cloud_id>/vpc/security-groups.   
 Этот функционал понадобится к следующей лекции. 
 
-------
-### Внимание!! Обязательно предоставляем на проверку получившийся код в виде ссылки на ваш github-репозиторий!
-------
+`Запросил`
 
 ### Задание 1
 В качестве ответа всегда полностью прикладывайте ваш terraform-код в git.  Убедитесь что ваша версия **Terraform** =1.5.5 (версия 1.6 может вызывать проблемы с Яндекс провайдером) 
@@ -86,6 +72,8 @@ https://console.cloud.yandex.ru/folders/<ваш cloud_id>/vpc/security-groups.
 
 ### Задание 7*
 
+
+
 Изучите содержимое файла console.tf. Откройте terraform console, выполните следующие задания: 
 
 1. Напишите, какой командой можно отобразить **второй** элемент списка test_list.
@@ -93,29 +81,28 @@ https://console.cloud.yandex.ru/folders/<ваш cloud_id>/vpc/security-groups.
 3. Напишите, какой командой можно отобразить значение ключа admin из map test_map.
 4. Напишите interpolation-выражение, результатом которого будет: "John is admin for production server based on OS ubuntu-20-04 with X vcpu, Y ram and Z virtual disks", используйте данные из переменных test_list, test_map, servers и функцию length() для подстановки значений.
 
-В качестве решения предоставьте необходимые команды и их вывод.
-
-------
-### Правила приёма работы
-
-В git-репозитории, в котором было выполнено задание к занятию «Введение в Terraform», создайте новую ветку terraform-02, закоммитьте в эту ветку свой финальный код проекта. Ответы на задания и необходимые скриншоты оформите в md-файле в ветке terraform-02.
-
-В качестве результата прикрепите ссылку на ветку terraform-02 в вашем репозитории.
-
-**Важно. Удалите все созданные ресурсы**.
+```
 
 
-### Критерии оценки
+# Напишите, какой командой можно отобразить второй элемент списка test_list.
+output "test_list" {
+  value = local.test_list[1]
+}
 
-Зачёт ставится, если:
+# Найдите длину списка test_list с помощью функции length(<имя переменной>).
+output "len" {
+  value = length(local.test_list)
+}
 
-* выполнены все задания,
-* ответы даны в развёрнутой форме,
-* приложены соответствующие скриншоты и файлы проекта,
-* в выполненных заданиях нет противоречий и нарушения логики.
+# Напишите, какой командой можно отобразить значение ключа admin из map test_map.
+output "name" {
+  value = local.test_map["admin"]
+}
 
-На доработку работу отправят, если:
+# Напишите interpolation-выражение, результатом которого будет: "John is admin for production server based on OS ubuntu-20-04 with X vcpu, Y ram and Z virtual disks", используйте данные из переменных test_list, test_map, servers и функцию length() для подстановки значений.
+output "name2" {
+  value = "${local.test_map.admin} is admin for ${local.test_list[2]} server based on OS ${local.servers[local.test_list[2]].image} with ${local.servers[local.test_list[2]].cpu} vcpu, ${local.servers[local.test_list[2]].ram} ram and ${length(local.servers[local.test_list[2]].disks)} virtual disks"
 
-* задание выполнено частично или не выполнено вообще,
-* в логике выполнения заданий есть противоречия и существенные недостатки. 
+}
 
+```
