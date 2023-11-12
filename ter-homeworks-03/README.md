@@ -38,15 +38,61 @@
 
 Приложите скриншот входящих правил «Группы безопасности» в ЛК Yandex Cloud или скриншот отказа в предоставлении доступа к preview-версии.
 
+![Screenshot from 2023-11-12 06-21-29](https://github.com/alexnet123/homeworks/assets/75438030/a2dd2a7e-a981-416b-8ace-156694863e80)
+
+
 ------
 
 ### Задание 2
 
 1. Создайте файл count-vm.tf. Опишите в нём создание двух **одинаковых** ВМ  web-1 и web-2 (не web-0 и web-1) с минимальными параметрами, используя мета-аргумент **count loop**. Назначьте ВМ созданную в первом задании группу безопасности.(как это сделать узнайте в документации провайдера yandex/compute_instance )
-2. Создайте файл for_each-vm.tf. Опишите в нём создание двух ВМ с именами "main" и "replica" **разных** по cpu/ram/disk , используя мета-аргумент **for_each loop**. Используйте для обеих ВМ одну общую переменную типа list(object({ vm_name=string, cpu=number, ram=number, disk=number  })). При желании внесите в переменную все возможные параметры.
-3. ВМ из пункта 2.2 должны создаваться после создания ВМ из пункта 2.1.
-4. Используйте функцию file в local-переменной для считывания ключа ~/.ssh/id_rsa.pub и его последующего использования в блоке metadata, взятому из ДЗ 2.
-5. Инициализируйте проект, выполните код.
+
+![Screenshot from 2023-11-12 07-58-09](https://github.com/alexnet123/homeworks/assets/75438030/91f3bb4c-578a-4987-95e4-cf2d8afb1714)
+
+```
+#создаем 2 идентичные ВМ
+resource "yandex_compute_instance" "web" {
+  name        = "web-${count.index + 1}"  
+  platform_id = "standard-v3"
+  count = 2
+
+  resources {
+    cores  = 2
+    memory = 1
+    core_fraction = 20
+  }
+
+  boot_disk {
+    initialize_params {
+      image_id = "fd8pf6624ff60n2pa1qk" 
+      type = "network-hdd"
+      size = 5
+    }   
+  }
+
+  metadata = {
+    ssh-keys = "ubuntu:${var.public_key}"
+  }
+
+  network_interface { 
+    subnet_id = yandex_vpc_subnet.develop.id
+    nat = true
+    security_group_ids = [yandex_vpc_security_group.example.id]
+  }
+
+  # ИЫспользовать прерываемые ВМ.
+  scheduling_policy { preemptible = true }
+
+  # Временная остановка ВМ
+  allow_stopping_for_update = true
+}
+
+```
+
+3. Создайте файл for_each-vm.tf. Опишите в нём создание двух ВМ с именами "main" и "replica" **разных** по cpu/ram/disk , используя мета-аргумент **for_each loop**. Используйте для обеих ВМ одну общую переменную типа list(object({ vm_name=string, cpu=number, ram=number, disk=number  })). При желании внесите в переменную все возможные параметры.
+4. ВМ из пункта 2.2 должны создаваться после создания ВМ из пункта 2.1.
+5. Используйте функцию file в local-переменной для считывания ключа ~/.ssh/id_rsa.pub и его последующего использования в блоке metadata, взятому из ДЗ 2.
+6. Инициализируйте проект, выполните код.
 
 ------
 
