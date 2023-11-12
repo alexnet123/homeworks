@@ -307,6 +307,9 @@ ${instance.name} ansible_host=${element(instance.network_interface, 0).nat_ip_ad
 ```
 Приложите скриншот вывода команды ```terrafrom output```.
 
+![Screenshot from 2023-11-12 23-51-40](https://github.com/alexnet123/homeworks/assets/75438030/20e90c0c-7b82-4d69-a3b5-41b7f301a1d1)
+
+
 ------
 
 ### Задание 6* (необязательное)
