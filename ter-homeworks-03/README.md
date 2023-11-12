@@ -248,6 +248,39 @@ resource "yandex_compute_instance" "storage_vm" {
 Для общего зачёта создайте в вашем GitHub-репозитории новую ветку terraform-03. Закоммитьте в эту ветку свой финальный код проекта, пришлите ссылку на коммит.   
 **Удалите все созданные ресурсы**.
 
+```
+resource "local_file" "ansible_inventory" {
+  content  = templatefile("inventory.tpl", {
+    webservers = yandex_compute_instance.vm,
+    databases  = yandex_compute_instance.vm_a,
+    storage    = [yandex_compute_instance.storage_vm],
+  })
+
+  filename = "hosts"
+}
+```
+```
+
+[databases]
+%{ for instance in webservers ~}
+${instance.name} ansible_host=${element(instance.network_interface, 0).nat_ip_address}
+%{ endfor ~}
+
+[webservers]
+%{ for instance in databases ~}
+${instance.name} ansible_host=${element(instance.network_interface, 0).nat_ip_address}
+%{ endfor ~}
+
+[storage]
+%{ for instance in storage ~}
+${instance.name} ansible_host=${element(instance.network_interface, 0).nat_ip_address}
+%{ endfor ~}
+
+```
+
+
+
+
 ------
 
 ## Дополнительные задания (со звездочкой*)
