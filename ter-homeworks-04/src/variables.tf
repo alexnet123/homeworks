@@ -33,7 +33,7 @@ variable "vpc_name" {
 
 ###common vars
 
-variable "vms_ssh_root_key" {
+variable "ssh_public_key" {
   type        = string
   default     = "your_ssh_ed25519_key"
   description = "ssh-keygen -t ed25519"
@@ -53,5 +53,60 @@ variable "vm_db_name" {
   description = "example vm_db_ prefix"
 }
 
+#Network
+#===============================================================
+variable "network_name" {
+  description = "The name of the VPC network"
+  type        = string
+  default     = "develop"
+}
+
+variable "subnet_name" {
+  description = "The name of the subnet"
+  type        = string
+  default     = "develop-ru-central1-a"
+}
+
+variable "subnet_zone" {
+  description = "The zone of the subnet"
+  type        = string
+  default     = "ru-central1-a"
+}
+
+variable "subnet_cidr_block" {
+  description = "The CIDR block for the subnet"
+  type        = string
+  default     = "10.0.1.0/24"
+}
+#===============================================================
 
 
+#VARS VM WEB
+#===============================================================
+
+variable "vm_web_instance_name" {
+  description = "Name of the instance"
+  type        = string
+  default     = "web"
+}
+
+variable "vm_web_instance_count" {
+  description = "Number of instances to create"
+  type        = string
+  default     = 1
+}
+
+variable "vm_web_image_family" {
+  description = "The image family for the instance"
+  type        = string
+  default     = "ubuntu-2004-lts"
+}
+
+variable "vm_web_public_ip" {
+  description = "Whether to assign a public IP"
+  type        = bool
+  default     = true
+}
+
+
+#===============================================================
