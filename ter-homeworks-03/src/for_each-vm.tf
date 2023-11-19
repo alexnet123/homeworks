@@ -1,41 +1,18 @@
-variable "virtual_machines" {
-  type = list(object({
-    vm_name = string
-    cpu     = number
-    ram     = number
-    disk    = number
-  }))
-  default = [
-    {
-      vm_name = "main"
-      cpu     = 4
-      ram     = 4
-      disk    = 20
-    },
-    {
-      vm_name = "replica"
-      cpu     = 2
-      ram     = 4
-      disk    = 20
-    },
-  ]
-}
 
 resource "yandex_compute_instance" "vm" {
   for_each = { for vm in var.virtual_machines : vm.vm_name => vm }
 
   name        = each.value.vm_name
-  platform_id = "standard-v3"
-
+  platform_id = each.value.platform_id
   resources {
     cores         = each.value.cpu
     memory        = each.value.ram
-    core_fraction = 20
+    core_fraction = each.value.core_fraction
   }
 
   boot_disk {
     initialize_params {
-      image_id = "fd8pf6624ff60n2pa1qk"
+      image_id = each.value.image_id
     }
   }
 

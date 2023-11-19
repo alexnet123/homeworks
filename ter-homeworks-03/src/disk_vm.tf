@@ -1,31 +1,25 @@
-variable "disk_count" {
-  default = 3
-}
 
-variable "disk_size_gb" {
-  default = 10
-}
 
 resource "yandex_compute_disk" "vm_disk" {
   count = var.disk_count
 
-  name  = "disk-${count.index + 1}"
+  name  = var.disk_name + "-" + tostring(count.index + 1)
   size  = var.disk_size_gb
 
 
 }
 
 resource "yandex_compute_instance" "storage_vm" {
-  name         = "storage"
-  platform_id  = "standard-v3"
+  name         = var.vm_disk_name
+  platform_id  = var.vm_disk_platform
   resources {
-    cores  = 2
-    memory = 4
+    cores  = var.vm_disk_core
+    memory = var.vm_disk_memory
   }
 
   boot_disk {
     initialize_params {
-      image_id = "fd8pf6624ff60n2pa1qk"
+      image_id = var.vm_disk_image
     }
   }
 
