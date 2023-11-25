@@ -22,16 +22,8 @@
 5. Откройте terraform console и предоставьте скриншот содержимого модуля. Пример: > module.vpc_dev.
 6. Сгенерируйте документацию к модулю с помощью terraform-docs.    
  
-Пример вызова
+![Screenshot from 2023-11-25 15-58-31](https://github.com/alexnet123/homeworks/assets/75438030/1adccc33-6538-45b7-8881-4f14261393a5)
 
-```
-module "vpc_dev" {
-  source       = "./vpc"
-  env_name     = "develop"
-  zone = "ru-central1-a"
-  cidr = "10.0.1.0/24"
-}
-```
 
 ### Задание 3
 1. Выведите список ресурсов в стейте.
