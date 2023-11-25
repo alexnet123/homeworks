@@ -1,0 +1,24 @@
+# Используйте официальный образ CentOS
+FROM centos:7
+
+# Установите необходимое программное обеспечение, например, SSH и sudo
+RUN yum -y update && \
+    yum -y install openssh-server sudo && \
+    yum clean all
+
+# Настройка SSH
+RUN ssh-keygen -A
+
+# Создание необходимого каталога для SSH
+RUN mkdir /run/sshd
+
+# Дополнительные команды для настройки SSH и создания пользователя ansible
+RUN useradd -m -s /bin/bash ansible && \
+    echo "ansible:ansible" | chpasswd && \
+    echo "ansible ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+# Открытие порта для SSH
+EXPOSE 22
+
+# Запуск SSH сервиса при старте контейнера
+CMD ["/usr/sbin/sshd", "-D"]

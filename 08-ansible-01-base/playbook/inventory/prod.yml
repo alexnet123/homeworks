@@ -1,9 +1,19 @@
 ---
+  local:
+    hosts:
+      localhost:
+        ansible_connection: local
   el:
     hosts:
-      centos7:
+      my-centos-container:
         ansible_connection: docker
+
   deb:
     hosts:
-      ubuntu:
+      my-debian-container:
         ansible_connection: docker
+  fedora:
+    hosts:
+      my-fedora-container:
+        ansible_connection: docker
+

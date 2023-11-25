@@ -1,0 +1,14 @@
+FROM pycontribs/fedora
+
+# Установка необходимых пакетов
+RUN dnf install -y sudo openssh-server python3
+
+# Настройки для Ansible и SSH
+RUN ssh-keygen -A
+RUN useradd -m -s /bin/bash ansible && \
+    echo "ansible:ansible" | chpasswd && \
+    echo "ansible ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
+
