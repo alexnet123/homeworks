@@ -32,6 +32,28 @@
 4. Импортируйте всё обратно. Проверьте terraform plan. Изменений быть не должно.
 Приложите список выполненных команд и скриншоты процессы.
 
+```
+terraform state list
+terraform state rm module.vpc_dev
+terraform state rm module.vm
+```
+
+![Screenshot from 2023-11-25 16-13-12](https://github.com/alexnet123/homeworks/assets/75438030/984ef186-3526-449c-9930-d8a6f1f45ac8)
+![Screenshot from 2023-11-25 16-19-38](https://github.com/alexnet123/homeworks/assets/75438030/c4221e2a-adaa-4f65-b0ae-160091de744c)
+
+```
+terraform import module.vpc_dev.yandex_vpc_network.vpc_network enpf428k6c94pbbpjl6g
+```
+
+![Screenshot from 2023-11-25 16-22-44](https://github.com/alexnet123/homeworks/assets/75438030/72c8895e-16a3-42e0-9888-df6cd8d0ead9)
+
+```
+terraform import module.vpc_dev.yandex_vpc_subnet.vpc_subnet e9bt48afnc18pjsiv6pg
+```
+
+![Screenshot from 2023-11-25 16-22-59](https://github.com/alexnet123/homeworks/assets/75438030/5bd7f002-0951-438b-89f5-524dda7f0ae4)
+
+
 ## Дополнительные задания (со звёздочкой*)
 
 **Настоятельно рекомендуем выполнять все задания со звёздочкой.**   Они помогут глубже разобраться в материале.   
