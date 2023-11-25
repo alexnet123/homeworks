@@ -77,43 +77,6 @@ root@debian:/home/alex/test/homeworks# git commit -m 'ter-homeworks-04 Task 4'
 
 ```
 
-Предоставьте код, план выполнения, результат из консоли YC.
-
-### Задание 5*
-
-1. Напишите модуль для создания кластера managed БД Mysql в Yandex Cloud с одним или несколькими(2 по умолчанию) хостами в зависимости от переменной HA=true или HA=false. Используйте ресурс yandex_mdb_mysql_cluster: передайте имя кластера и id сети.
-2. Напишите модуль для создания базы данных и пользователя в уже существующем кластере managed БД Mysql. Используйте ресурсы yandex_mdb_mysql_database и yandex_mdb_mysql_user: передайте имя базы данных, имя пользователя и id кластера при вызове модуля.
-3. Используя оба модуля, создайте кластер example из одного хоста, а затем добавьте в него БД test и пользователя app. Затем измените переменную и превратите сингл хост в кластер из 2-х серверов.
-4. Предоставьте план выполнения и по возможности результат. Сразу же удаляйте созданные ресурсы, так как кластер может стоить очень дорого. Используйте минимальную конфигурацию.
-
-### Задание 6*
-
-1. Разверните у себя локально vault, используя docker-compose.yml в проекте.
-2. Для входа в web-интерфейс и авторизации terraform в vault используйте токен "education".
-3. Создайте новый секрет по пути http://127.0.0.1:8200/ui/vault/secrets/secret/create
-Path: example  
-secret data key: test 
-secret data value: congrats!  
-4. Считайте этот секрет с помощью terraform и выведите его в output по примеру:
-```
-provider "vault" {
- address = "http://<IP_ADDRESS>:<PORT_NUMBER>"
- skip_tls_verify = true
- token = "education"
-}
-data "vault_generic_secret" "vault_example"{
- path = "secret/example"
-}
-
-output "vault_example" {
- value = "${nonsensitive(data.vault_generic_secret.vault_example.data)}"
-} 
-
-Можно обратиться не к словарю, а конкретному ключу:
-terraform console: >nonsensitive(data.vault_generic_secret.vault_example.data.<имя ключа в секрете>)
-```
-5. Попробуйте самостоятельно разобраться в документации и записать новый секрет в vault с помощью terraform. 
-
 
 
 
