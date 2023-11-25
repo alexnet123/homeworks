@@ -28,10 +28,10 @@ ok: [localhost] => {
 Dockerfile для CentOS
 
 ```
-# Используйте официальный образ CentOS
+# Образ CentOS
 FROM centos:latest
 
-# Установите необходимое программное обеспечение, например, SSH и sudo
+# Необходимое программное обеспечение, например
 RUN yum -y update && \
     yum -y install openssh-server sudo && \
     yum clean all
@@ -58,10 +58,10 @@ CMD ["/usr/sbin/sshd", "-D"]
 Dockerfile для Debian
 
 ```
-# Используйте официальный образ Debian
+# Официальный образ Debian
 FROM debian:latest
 
-# Установите необходимое программное обеспечение, например, SSH и sudo
+# Необходимое программное обеспечение, например, SSH и sudo
 RUN apt-get update && \
     apt-get -y install openssh-server sudo && \
     apt-get -y install python3 && \
@@ -227,9 +227,144 @@ NAME: local
 ## Необязательная часть
 
 1. При помощи `ansible-vault` расшифруйте все зашифрованные файлы с переменными.
+
+```
+
+root@debian:/home/alex/test/homeworks/08-ansible-01-base/playbook# ansible-vault decrypt group_vars/deb/examp.yml 
+Vault password: 
+Decryption successful
+root@debian:/home/alex/test/homeworks/08-ansible-01-base/playbook# cat group_vars/deb/examp.yml 
+---
+  some_fact: "deb default fact"
+
+
+root@debian:/home/alex/test/homeworks/08-ansible-01-base/playbook# ansible-vault decrypt group_vars/el/examp.yml 
+Vault password: 
+Decryption successful
+root@debian:/home/alex/test/homeworks/08-ansible-01-base/playbook# cat group_vars/el/examp.yml 
+---
+  some_fact: "el default fact"
+
+```
+
+
 2. Зашифруйте отдельное значение `PaSSw0rd` для переменной `some_fact` паролем `netology`. Добавьте полученное значение в `group_vars/all/exmp.yml`.
+
+```
+root@debian:/home/alex/test/homeworks/08-ansible-01-base/playbook# ansible-vault encrypt_string 'PaSSw0rd' --name 'some_fact'
+New Vault password: 
+Confirm New Vault password: 
+Encryption successful
+some_fact: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          36383639663265646531633066653937303038323461333663653961333465316634653735356362
+          3737366139666630353565313431323239353636633636370a636361653530616362343232666465
+          66313632396665363465383363633634636537323564373736663566653365383861343138663437
+          3239643335613463330a383264336330306237396165346562623830623330646639613166393830
+          6164
+
+
+```
+
 3. Запустите `playbook`, убедитесь, что для нужных хостов применился новый `fact`.
+
+![Screenshot from 2023-11-25 23-36-08](https://github.com/alexnet123/homeworks/assets/75438030/5e4eef6a-e4cd-4c28-83c7-f8ad9697d54c)
+
+
 4. Добавьте новую группу хостов `fedora`, самостоятельно придумайте для неё переменную. В качестве образа можно использовать [этот вариант](https://hub.docker.com/r/pycontribs/fedora).
+
+Dockerfile-fedora
+```
+FROM pycontribs/fedora
+
+# Установка необходимых пакетов
+RUN dnf install -y sudo openssh-server python3
+
+# Настройки для Ansible и SSH
+RUN ssh-keygen -A
+RUN useradd -m -s /bin/bash ansible && \
+    echo "ansible:ansible" | chpasswd && \
+    echo "ansible ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
+
+```
+Сборка
+```
+docker build -f Dockerfile-fedora -t my-fedora .
+
+```
+
+Запуск
+
+```
+docker run -d -P --name my-fedora-container my-fedora
+```
+
+inventory
+```
+root@debian:/home/alex/test/homeworks/08-ansible-01-base/playbook# cat  inventory/prod.yml
+---
+  local:
+    hosts:
+      localhost:
+        ansible_connection: local
+  el:
+    hosts:
+      my-centos-container:
+        ansible_connection: docker
+
+  deb:
+    hosts:
+      my-debian-container:
+        ansible_connection: docker
+  fedora:
+    hosts:
+      my-fedora-container:
+        ansible_connection: docker
+
+```
+
+![Screenshot from 2023-11-25 23-45-53](https://github.com/alexnet123/homeworks/assets/75438030/20a624b1-87cf-4180-b3a4-b8d016a962dd)
+
+
 5. Напишите скрипт на bash: автоматизируйте поднятие необходимых контейнеров, запуск ansible-playbook и остановку контейнеров.
-6. Все изменения должны быть зафиксированы и отправлены в ваш личный репозиторий.
+
+```
+root@debian:/home/alex/test/homeworks/08-ansible-01-base/playbook# cat run_playbook.sh 
+#!/bin/bash
+
+# Запуск Docker контейнеров
+docker run -d --name my-fedora-container my-fedora
+docker run -d --name my-debian-container my-debian
+docker run -d --name my-centos-container my-centos
+
+# Проверка статуса контейнеров
+sleep 5
+
+# Запуск Ansible Playbook
+ansible-playbook -i inventory/prod.yml site.yml --ask-vault-pass
+
+# Остановка и удаление контейнеров
+docker stop my-fedora-container
+docker rm my-fedora-container
+
+docker stop my-debian-container
+docker rm my-debian-container
+
+docker stop my-centos-container
+docker rm my-centos-container
+
+
+root@debian:/home/alex/test/homeworks/08-ansible-01-base/playbook# docker images
+REPOSITORY   TAG       IMAGE ID       CREATED             SIZE
+my-fedora    latest    e5ba765249e9   13 minutes ago      885MB
+my-debian    latest    b6e6469779de   About an hour ago   210MB
+my-centos    latest    c2b1f0af3433   About an hour ago   371MB
+root@debian:/home/alex/test/homeworks/08-ansible-01-base/playbook# 
+
+
+```
+
 
