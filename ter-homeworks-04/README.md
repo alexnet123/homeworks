@@ -56,33 +56,25 @@ terraform import module.vpc_dev.yandex_vpc_subnet.vpc_subnet e9bt48afnc18pjsiv6p
 
 ## Дополнительные задания (со звёздочкой*)
 
-**Настоятельно рекомендуем выполнять все задания со звёздочкой.**   Они помогут глубже разобраться в материале.   
-Задания со звёздочкой дополнительные, не обязательные к выполнению и никак не повлияют на получение вами зачёта по этому домашнему заданию. 
-
 
 ### Задание 4*
 
 1. Измените модуль vpc так, чтобы он мог создать подсети во всех зонах доступности, переданных в переменной типа list(object) при вызове модуля.  
-  
-Пример вызова
-```
-module "vpc_prod" {
-  source       = "./vpc"
-  env_name     = "production"
-  subnets = [
-    { zone = "ru-central1-a", cidr = "10.0.1.0/24" },
-    { zone = "ru-central1-b", cidr = "10.0.2.0/24" },
-    { zone = "ru-central1-c", cidr = "10.0.3.0/24" },
-  ]
-}
 
-module "vpc_dev" {
-  source       = "./vpc"
-  env_name     = "develop"
-  subnets = [
-    { zone = "ru-central1-a", cidr = "10.0.1.0/24" },
-  ]
-}
+Обновленный код находится в файлах 
+  
+```
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   ter-homeworks-04/src/main.tf
+	modified:   ter-homeworks-04/src/vpc/main.tf
+	modified:   ter-homeworks-04/src/vpc/outputs.tf
+	modified:   ter-homeworks-04/src/vpc/variables.tf
+
+root@debian:/home/alex/test/homeworks# git commit -m 'ter-homeworks-04 Task 4'
+[main d235a41] ter-homeworks-04 Task 4
+ 4 files changed, 128 insertions(+), 31 deletions(-)
+
 ```
 
 Предоставьте код, план выполнения, результат из консоли YC.
