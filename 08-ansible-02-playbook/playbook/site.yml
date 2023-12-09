@@ -69,3 +69,10 @@
         name: vector
         state: started
         enabled: true
+  
+  handlers:
+    - name: Restart Vector
+      ansible.builtin.systemd:
+        name: vector
+        state: restarted
+        enabled: true
