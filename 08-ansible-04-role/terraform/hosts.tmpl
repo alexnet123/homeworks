@@ -1,0 +1,6 @@
+[${hostname_vm1}]
+${hostname_vm1} ansible_host=${external_ip_address_vm1} ansible_user=${user_vm1} ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_python_interpreter=/usr/bin/python3
+[${hostname_vm2}]
+${hostname_vm2} ansible_host=${external_ip_address_vm2} ansible_user=${user_vm2} ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+[${hostname_vm3}]
+${hostname_vm3} ansible_host=${external_ip_address_vm3} ansible_user=${user_vm3} ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_python_interpreter=/usr/bin/python3

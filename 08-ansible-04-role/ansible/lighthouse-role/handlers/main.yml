@@ -1,0 +1,7 @@
+---
+# handlers file for lighthouse-role
+
+  - name: restart nginx
+    systemd:
+      name: nginx
+      state: restarted

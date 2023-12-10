@@ -1,0 +1,21 @@
+# Настройка clickhouse
+- hosts: clickhouse
+  become: true
+  tags:
+    - install
+  roles:
+    - clickhouse
+
+
+# Установка vector
+- hosts: vector
+  become: true
+  roles:
+    - vector-role
+  
+# Установка lighthouse
+- hosts: lighthouse
+  become: true
+  roles:
+    - lighthouse-role
+  
