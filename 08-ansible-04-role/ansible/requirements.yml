@@ -3,3 +3,12 @@
     scm: git
     version: "1.13"
     name: clickhouse 
+
+  - src: https://github.com/alexnet123/vector-role
+    scm: git
+    name: vector
+
+  - src: https://github.com/alexnet123/lighthouse-role
+    scm: git
+    name: lighthouse
+...

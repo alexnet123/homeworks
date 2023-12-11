@@ -12,6 +12,21 @@ terraform apply
 
 ```
 cd homeworks/08-ansible-04-role/ansible
+ansible-galaxy install -r requirements.yml
 ansible-playbook -i ../hosts start_role.yml
 ```
-### После запуска terraform и ansible в Yandex Cloud запустятся три машины после чего на них установится ПО.
+### После запуска terraform и ansible в Yandex Cloud запустятся три виртуальные машины, после чего на них установится ПО.
+
+
+### Данный проект использует три публичных репозитория
+```
+https://github.com/alexnet123/lighthouse-role
+```
+
+```
+https://github.com/alexnet123/vector-role
+```
+
+```
+https://github.com/AlexeySetevoi/ansible-clickhouse.git
+```
