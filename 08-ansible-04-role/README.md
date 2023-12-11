@@ -2,6 +2,11 @@
 
 ## Запуск  
 
+Добавим публичный ключ к своему профилю на GitHub.
+
+![Screenshot from 2023-12-11 21-43-19](https://github.com/alexnet123/homeworks/assets/75438030/f8cab896-9436-4f8f-9cd6-4b501156a0f2)
+
+
 Развернем в Yandex Cloud три виртуальных машины: для `clickhouse`, для `vector` и для `lighthouse`.
 
 ```
