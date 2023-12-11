@@ -1,8 +1,0 @@
----
-# handlers file for vector-role
-
-  - name: Restart Vector
-    ansible.builtin.systemd:
-      name: vector
-      state: restarted
-      enabled: true
