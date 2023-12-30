@@ -1,4 +1,4 @@
-# Домашнее задание к занятию 10 «Jenkins»
+# Домашнее задание к занятию 10 «Jenkins» Вахрамеев А.В.
 
 ## Подготовка к выполнению
 
@@ -7,9 +7,22 @@
 3. Запустить и проверить работоспособность.
 4. Сделать первоначальную настройку.
 
+![Screenshot from 2023-12-30 21-54-23](https://github.com/alexnet123/homeworks/assets/75438030/eb5ec801-8b1d-498a-9785-30158aa07b5a)
+
+![Screenshot from 2023-12-30 21-55-50](https://github.com/alexnet123/homeworks/assets/75438030/250b77df-2b29-4b60-a0f0-8e2e5a92eda1)
+
+
 ## Основная часть
 
 1. Сделать Freestyle Job, который будет запускать `molecule test` из любого вашего репозитория с ролью.
+```
+rm -rf vector-role
+/usr/bin/git clone https://github.com/alexnet123/vector-role.git
+ls
+cd vector-role
+/usr/bin/git checkout tags/v1.1.0
+molecule test
+```
 2. Сделать Declarative Pipeline Job, который будет запускать `molecule test` из любого вашего репозитория с ролью.
 3. Перенести Declarative Pipeline в репозиторий в файл `Jenkinsfile`.
 4. Создать Multibranch Pipeline на запуск `Jenkinsfile` из репозитория.
