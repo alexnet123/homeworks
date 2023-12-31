@@ -17,9 +17,9 @@ node("linux") {
         // Проверяем значения prod_run и secret_check
         if (secret_check) {
             if (params.prod_run) {
-                sh 'sudo ansible-playbook site.yml -i inventory/prod.yml -e ansible_python_interpreter="/usr/local/bin/python3.8"'
+                sh 'ansible-playbook site.yml -i inventory/prod.yml -e ansible_python_interpreter="/usr/local/bin/python3.8"'
             } else {
-                sh 'sudo ansible-playbook site.yml -i inventory/prod.yml --check --diff -e ansible_python_interpreter="/usr/local/bin/python3.8"'
+                sh 'ansible-playbook site.yml -i inventory/prod.yml --check --diff -e ansible_python_interpreter="/usr/local/bin/python3.8"'
             }
         } else {
             echo 'need more action'
