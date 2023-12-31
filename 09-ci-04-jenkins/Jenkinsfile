@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Cleanup') {
+            steps {
+                // Удаляем предыдущую копию репозитория, если она существует
+                sh 'rm -rf vector-role'
+            }
+        }
+
+        stage('Clone repository') {
+            steps {
+                // Клонируем репозиторий
+                sh 'git clone https://github.com/alexnet123/vector-role.git'
+            }
+        }
+
+        stage('Checkout branch') {
+            steps {
+                // Переходим в каталог репозитория и переключаемся на ветку
+                dir('vector-role') {
+                    sh 'git checkout temp-branch'
+                }
+            }
+        }
+
+        stage('Run molecule test') {
+            steps {
+                // Запускаем molecule test
+                dir('vector-role') {
+                    sh 'molecule test'
+                }
+            }
+        }
+    }
+}
