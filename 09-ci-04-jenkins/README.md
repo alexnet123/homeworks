@@ -12,18 +12,65 @@
 ![Screenshot from 2023-12-30 21-55-50](https://github.com/alexnet123/homeworks/assets/75438030/250b77df-2b29-4b60-a0f0-8e2e5a92eda1)
 
 
+
+
 ## Основная часть
 
 1. Сделать Freestyle Job, который будет запускать `molecule test` из любого вашего репозитория с ролью.
 ```
 rm -rf vector-role
-/usr/bin/git clone https://github.com/alexnet123/vector-role.git
-ls
+git clone https://github.com/alexnet123/vector-role.git
 cd vector-role
-/usr/bin/git checkout tags/v1.1.0
+git checkout temp-branch 
 molecule test
 ```
+![Screenshot from 2023-12-31 15-04-23](https://github.com/alexnet123/homeworks/assets/75438030/b036d836-3ff2-4d28-927d-4759bd15bc5a)
+
 2. Сделать Declarative Pipeline Job, который будет запускать `molecule test` из любого вашего репозитория с ролью.
+```
+pipeline {
+    agent any
+
+    stages {
+        stage('Cleanup') {
+            steps {
+                // Удаляем предыдущую копию репозитория, если она существует
+                sh 'rm -rf vector-role'
+            }
+        }
+
+        stage('Clone repository') {
+            steps {
+                // Клонируем репозиторий
+                sh 'git clone https://github.com/alexnet123/vector-role.git'
+            }
+        }
+
+        stage('Checkout branch') {
+            steps {
+                // Переходим в каталог репозитория и переключаемся на ветку
+                dir('vector-role') {
+                    sh 'git checkout temp-branch'
+                }
+            }
+        }
+
+        stage('Run molecule test') {
+            steps {
+                // Запускаем molecule test
+                dir('vector-role') {
+                    sh 'molecule test'
+                }
+            }
+        }
+    }
+}
+
+```
+
+![Screenshot from 2023-12-31 15-40-21](https://github.com/alexnet123/homeworks/assets/75438030/22579f5a-dca6-40e9-9249-2dd8a12f34f0)
+
+
 3. Перенести Declarative Pipeline в репозиторий в файл `Jenkinsfile`.
 4. Создать Multibranch Pipeline на запуск `Jenkinsfile` из репозитория.
 5. Создать Scripted Pipeline, наполнить его скриптом из [pipeline](./pipeline).
