@@ -1,5 +1,5 @@
 def increment(index):
-    index =+ 1
+    index += 1
     return index
 def get_square(numb):
     return numb*numb
@@ -11,3 +11,5 @@ index = 0
 while (index < 10):
     index = increment(index)
     print(get_square(index))
+
+#admin: f9c654b92f2777d87b3ea90ba2194e64f2e5f8a4    
