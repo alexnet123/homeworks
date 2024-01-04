@@ -93,6 +93,24 @@ root@debian:~#
 3. Проверьте директорию `~/.m2/repository/`, найдите ваш артефакт.
 4. В ответе пришлите исправленный файл `pom.xml`.
 
+```
+root@debian:/home/alex/test/homeworks/09-ci-03-cicd/mvn# ls -al /root/.m2/repository/
+total 16
+drwxr-xr-x 4 root root 4096 Jan  4 21:08 .
+drwxr-xr-x 3 root root 4096 Jan  4 21:08 ..
+drwxr-xr-x 3 root root 4096 Jan  4 21:08 netology
+drwxr-xr-x 4 root root 4096 Jan  4 21:08 org
+root@debian:/home/alex/test/homeworks/09-ci-03-cicd/mvn# ls -al /root/.m2/repository/netology/
+total 12
+drwxr-xr-x 3 root root 4096 Jan  4 21:08 .
+drwxr-xr-x 4 root root 4096 Jan  4 21:08 ..
+drwxr-xr-x 3 root root 4096 Jan  4 21:08 java
+root@debian:/home/alex/test/homeworks/09-ci-03-cicd/mvn# 
+
+
+
+```
+
 ---
 
 ### Как оформить решение задания
