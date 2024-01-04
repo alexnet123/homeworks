@@ -1,4 +1,4 @@
-# Домашнее задание к занятию 9 «Процессы CI/CD»
+# Домашнее задание к занятию 9 «Процессы CI/CD» Вахрамеев А.В.
 
 ## Подготовка к выполнению
 
@@ -6,10 +6,20 @@
 2. Пропишите в [inventory](./infrastructure/inventory/cicd/hosts.yml) [playbook](./infrastructure/site.yml) созданные хосты.
 3. Добавьте в [files](./infrastructure/files/) файл со своим публичным ключом (id_rsa.pub). Если ключ называется иначе — найдите таску в плейбуке, которая использует id_rsa.pub имя, и исправьте на своё.
 4. Запустите playbook, ожидайте успешного завершения.
+
+![Screenshot from 2024-01-04 16-15-27](https://github.com/alexnet123/homeworks/assets/75438030/28998ab7-49ae-4800-a4a0-b111a682d1a9)
+
 5. Проверьте готовность SonarQube через [браузер](http://localhost:9000).
 6. Зайдите под admin\admin, поменяйте пароль на свой.
+
+![Screenshot from 2024-01-04 16-17-06](https://github.com/alexnet123/homeworks/assets/75438030/0051ee4d-f00c-4119-a74f-1709a8461710)
+
+
 7.  Проверьте готовность Nexus через [бразуер](http://localhost:8081).
 8. Подключитесь под admin\admin123, поменяйте пароль, сохраните анонимный доступ.
+
+![Screenshot from 2024-01-04 16-19-57](https://github.com/alexnet123/homeworks/assets/75438030/e85f4c71-2d33-4697-b918-35283ae0172e)
+
 
 ## Знакомоство с SonarQube
 
