@@ -29,11 +29,21 @@
 2. Скачайте пакет sonar-scanner, который вам предлагает скачать SonarQube.
 3. Сделайте так, чтобы binary был доступен через вызов в shell (или поменяйте переменную PATH, или любой другой, удобный вам способ).
 4. Проверьте `sonar-scanner --version`.
+
+![Screenshot from 2024-01-04 16-56-50](https://github.com/alexnet123/homeworks/assets/75438030/dbbc4d3b-5af2-4402-8c28-e0a9a63b8507)
+
 5. Запустите анализатор против кода из директории [example](./example) с дополнительным ключом `-Dsonar.coverage.exclusions=fail.py`.
 6. Посмотрите результат в интерфейсе.
+
+![Screenshot from 2024-01-04 16-59-41](https://github.com/alexnet123/homeworks/assets/75438030/ecf9cd27-4427-4fa3-bdef-935eabf9d779)
+
+
 7. Исправьте ошибки, которые он выявил, включая warnings.
 8. Запустите анализатор повторно — проверьте, что QG пройдены успешно.
 9. Сделайте скриншот успешного прохождения анализа, приложите к решению ДЗ.
+
+![Screenshot from 2024-01-04 17-01-43](https://github.com/alexnet123/homeworks/assets/75438030/a69583ba-a5c2-4129-8a09-12ec6b238e27)
+
 
 ## Знакомство с Nexus
 
