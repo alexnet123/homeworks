@@ -72,6 +72,18 @@
 2. Разархивируйте, сделайте так, чтобы binary был доступен через вызов в shell (или поменяйте переменную PATH, или любой другой, удобный вам способ).
 3. Удалите из `apache-maven-<version>/conf/settings.xml` упоминание о правиле, отвергающем HTTP- соединение — раздел mirrors —> id: my-repository-http-unblocker.
 4. Проверьте `mvn --version`.
+
+```
+root@debian:~# mvn --version
+Apache Maven 3.9.6 (bc0240f3c744dd6b6ec2920b3cd08dcc295161ae)
+Maven home: /opt/apache-maven-3.9.6
+Java version: 17.0.9, vendor: Debian, runtime: /usr/lib/jvm/java-17-openjdk-amd64
+Default locale: en_US, platform encoding: UTF-8
+OS name: "linux", version: "6.1.0-16-amd64", arch: "amd64", family: "unix"
+root@debian:~# 
+
+```
+
 5. Заберите директорию [mvn](./mvn) с pom.
 
 ### Основная часть
