@@ -53,6 +53,9 @@
 2. Текст с `{ "message": "Already started" }` на `{ "message": "Running"}`.
 3. Issue поставить label: feature.
 
+![Screenshot from 2024-01-06 17-17-28](https://github.com/alexnet123/homeworks/assets/75438030/facdfa9d-c139-4b5d-917d-c8fae370fcd5)
+
+
 ### Developer
 
 Пришёл новый Issue на доработку, вам нужно:
