@@ -42,6 +42,8 @@
 
 ![Screenshot from 2024-01-06 16-55-50](https://github.com/alexnet123/homeworks/assets/75438030/9f34c6d4-c225-40c3-a9cf-ca50e8e41d69)
 
+![Screenshot from 2024-01-06 16-58-34](https://github.com/alexnet123/homeworks/assets/75438030/70d784fe-4209-4c63-a09f-be72f5c92ef3)
+
 
 ### Product Owner
 
