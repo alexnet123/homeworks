@@ -1,11 +1,17 @@
-# Домашнее задание к занятию 12 «GitLab»
+# Домашнее задание к занятию 12 «GitLab» Вахрамеев А.В.
 
 ## Подготовка к выполнению
 
 
 1. Или подготовьте к работе Managed GitLab от yandex cloud [по инструкции](https://cloud.yandex.ru/docs/managed-gitlab/operations/instance/instance-create) .
 Или создайте виртуальную машину из публичного образа [по инструкции](https://cloud.yandex.ru/marketplace/products/yc/gitlab ) .
+
+![Screenshot from 2024-01-06 13-36-33](https://github.com/alexnet123/homeworks/assets/75438030/7dbeb391-91e5-4e09-861f-fd015bd8b6ed)
+
 2. Создайте виртуальную машину и установите на нее gitlab runner, подключите к вашему серверу gitlab  [по инструкции](https://docs.gitlab.com/runner/install/linux-repository.html) .
+
+![Screenshot from 2024-01-06 14-00-54](https://github.com/alexnet123/homeworks/assets/75438030/ba0ee6f5-103f-483a-bddb-633afd2dc029)
+
 
 3. (* Необязательное задание повышенной сложности. )  Если вы уже знакомы с k8s попробуйте выполнить задание, запустив gitlab server и gitlab runner в k8s  [по инструкции](https://cloud.yandex.ru/docs/tutorials/infrastructure-management/gitlab-containers). 
 
@@ -13,7 +19,12 @@
 5. Создайте новый репозиторий в GitLab, наполните его [файлами](./repository).
 6. Проект должен быть публичным, остальные настройки по желанию.
 
+![Screenshot from 2024-01-06 13-38-04](https://github.com/alexnet123/homeworks/assets/75438030/b34e62f8-e08a-4ff2-9029-0f76b8521588)
+
+
 ## Основная часть
+
+
 
 ### DevOps
 
