@@ -6,11 +6,12 @@
 1. Или подготовьте к работе Managed GitLab от yandex cloud [по инструкции](https://cloud.yandex.ru/docs/managed-gitlab/operations/instance/instance-create) .
 Или создайте виртуальную машину из публичного образа [по инструкции](https://cloud.yandex.ru/marketplace/products/yc/gitlab ) .
 
-![Screenshot from 2024-01-06 13-36-33](https://github.com/alexnet123/homeworks/assets/75438030/7dbeb391-91e5-4e09-861f-fd015bd8b6ed)
+![Screenshot from 2024-01-06 18-22-13](https://github.com/alexnet123/homeworks/assets/75438030/4a258633-2640-4488-add0-8eb22f9d801c)
+
 
 2. Создайте виртуальную машину и установите на нее gitlab runner, подключите к вашему серверу gitlab  [по инструкции](https://docs.gitlab.com/runner/install/linux-repository.html) .
 
-![Screenshot from 2024-01-06 14-00-54](https://github.com/alexnet123/homeworks/assets/75438030/ba0ee6f5-103f-483a-bddb-633afd2dc029)
+![Screenshot from 2024-01-06 18-23-27](https://github.com/alexnet123/homeworks/assets/75438030/adef259f-8b36-4c6d-a5fa-22f7b6eea052)
 
 
 3. (* Необязательное задание повышенной сложности. )  Если вы уже знакомы с k8s попробуйте выполнить задание, запустив gitlab server и gitlab runner в k8s  [по инструкции](https://cloud.yandex.ru/docs/tutorials/infrastructure-management/gitlab-containers). 
@@ -19,7 +20,7 @@
 5. Создайте новый репозиторий в GitLab, наполните его [файлами](./repository).
 6. Проект должен быть публичным, остальные настройки по желанию.
 
-![Screenshot from 2024-01-06 13-38-04](https://github.com/alexnet123/homeworks/assets/75438030/b34e62f8-e08a-4ff2-9029-0f76b8521588)
+![Screenshot from 2024-01-06 18-24-06](https://github.com/alexnet123/homeworks/assets/75438030/ed504ee0-67ce-40de-902d-17b802e83985)
 
 
 ## Основная часть
@@ -159,7 +160,27 @@ root@debian:/home/alex/test/my-pro#
 Разработчики выполнили новый Issue, необходимо проверить валидность изменений:
 
 1. Поднять докер-контейнер с образом `python-api:latest` и проверить возврат метода на корректность.
+
+```
+root@runner:/home/admin# curl 158.160.102.66:5290/get_info
+{"version": 3, "method": "GET", "message": "Running"}
+root@runner:/home/admin# docker ps
+CONTAINER ID   IMAGE                                                COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+53fd4ef530b0   51.250.6.58:5005/root/my-pro:hello-gitlab-bd58f02c   "python3 python-api.…"   6 minutes ago   Up 6 minutes   0.0.0.0:5290->5290/tcp, :::5290->5290/tcp   silly_albattani
+root@runner:/home/admin# 
+
+```
+
 2. Закрыть Issue с комментарием об успешности прохождения, указав желаемый результат и фактически достигнутый.
+
+```
+root@runner:/home/admin# curl 158.160.102.66:5290/get_info
+{"version": 3, "method": "GET", "message": "Running"}
+root@runner:/home/admin# 
+
+```
+![Screenshot from 2024-01-06 18-20-17](https://github.com/alexnet123/homeworks/assets/75438030/291929d3-50bd-4137-84a8-395d271a38c1)
+
 
 ## Итог
 
