@@ -64,6 +64,95 @@
 2. Внести изменения по тексту из задания.
 3. Подготовить Merge Request, влить необходимые изменения в `master`, проверить, что сборка прошла успешно.
 
+```
+root@debian:/home/alex/test# git clone http://51.250.6.58/root/my-pro.git
+Cloning into 'my-pro'...
+remote: Enumerating objects: 18, done.
+remote: Counting objects: 100% (18/18), done.
+remote: Compressing objects: 100% (16/16), done.
+remote: Total 18 (delta 4), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (18/18), 4.80 KiB | 702.00 KiB/s, done.
+Resolving deltas: 100% (4/4), done.
+root@debian:/home/alex/test# cd my-pro
+root@debian:/home/alex/test/my-pro# git checkout -b feature/change-get-info-response
+Switched to a new branch 'feature/change-get-info-response'
+root@debian:/home/alex/test/my-pro# cat python-api.py 
+from flask import Flask, request
+from flask_restful import Resource, Api
+from json import dumps
+from flask_jsonpify import jsonify
+
+app = Flask(__name__)
+api = Api(app)
+
+class Info(Resource):
+    def get(self):
+        return {'version': 3, 'method': 'GET', 'message': 'Already started'}
+
+api.add_resource(Info, '/get_info')
+
+if __name__ == '__main__':
+     app.run(host='0.0.0.0', port='5290')
+root@debian:/home/alex/test/my-pro# nano python-api.py 
+root@debian:/home/alex/test/my-pro# cat python-api.py 
+from flask import Flask, request
+from flask_restful import Resource, Api
+from json import dumps
+from flask_jsonpify import jsonify
+
+app = Flask(__name__)
+api = Api(app)
+
+class Info(Resource):
+    def get(self):
+        return {'version': 3, 'method': 'GET', 'message': 'Running'}
+
+api.add_resource(Info, '/get_info')
+
+if __name__ == '__main__':
+     app.run(host='0.0.0.0', port='5290')
+root@debian:/home/alex/test/my-pro# git status
+On branch feature/change-get-info-response
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   python-api.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
+root@debian:/home/alex/test/my-pro# git add *
+root@debian:/home/alex/test/my-pro# git status
+On branch feature/change-get-info-response
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   python-api.py
+
+root@debian:/home/alex/test/my-pro# git commit -m "Changed GET /rest/api/get_info"
+[feature/change-get-info-response ce1cd9b] Changed GET /rest/api/get_info
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+root@debian:/home/alex/test/my-pro# git push origin feature/change-get-info-response
+Username for 'http://51.250.6.58': root
+Password for 'http://root@51.250.6.58': 
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 306 bytes | 306.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: 
+remote: To create a merge request for feature/change-get-info-response, visit:
+remote:   http://51.250.6.58/root/my-pro/-/merge_requests/new?merge_request%5Bsource_branch%5D=feature%2Fchange-get-info-response
+remote: 
+To http://51.250.6.58/root/my-pro.git
+ * [new branch]      feature/change-get-info-response -> feature/change-get-info-response
+root@debian:/home/alex/test/my-pro# 
+
+
+```
+
+![Screenshot from 2024-01-06 17-27-24](https://github.com/alexnet123/homeworks/assets/75438030/4ffb85a5-c8c0-4bf3-b6df-c73fdfc2ef12)
+
+![Screenshot from 2024-01-06 17-36-53](https://github.com/alexnet123/homeworks/assets/75438030/323db163-3637-4f44-93bd-37da179d93f2)
+
 
 ### Tester
 
