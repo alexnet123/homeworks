@@ -38,6 +38,11 @@
 6. Точка вызова: запуск скрипта.
 7. При комите в любую ветку должен собираться docker image с форматом имени hello:gitlab-$CI_COMMIT_SHORT_SHA . Образ должен быть выложен в Gitlab registry или yandex registry.   
 
+![Screenshot from 2024-01-06 16-55-16](https://github.com/alexnet123/homeworks/assets/75438030/94342d12-eefb-45d7-8e67-c368c411e13c)
+
+![Screenshot from 2024-01-06 16-55-50](https://github.com/alexnet123/homeworks/assets/75438030/9f34c6d4-c225-40c3-a9cf-ca50e8e41d69)
+
+
 ### Product Owner
 
 Вашему проекту нужна бизнесовая доработка: нужно поменять JSON ответа на вызов метода GET `/rest/api/get_info`, необходимо создать Issue в котором указать:
