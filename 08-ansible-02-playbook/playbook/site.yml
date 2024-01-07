@@ -63,6 +63,8 @@
         src: "templates/vector_config.yaml.j2"
         dest: "/etc/vector/vector.yaml"
         mode: '0644'
+      notify: Restart Vector
+
 
     - name: Start and enable Vector service
       ansible.builtin.systemd:
