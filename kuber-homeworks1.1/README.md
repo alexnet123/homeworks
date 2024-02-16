@@ -18,4 +18,7 @@
 
 ![Screenshot from 2024-02-16 14-02-47](https://github.com/alexnet123/homeworks/assets/75438030/1a626b59-e1db-42ce-b3ca-ed758efdaec6)
 
+![Screenshot from 2024-02-16 14-33-26](https://github.com/alexnet123/homeworks/assets/75438030/d5e271c0-f54c-4a94-938c-76e788dfc738)
+
+
 ------
