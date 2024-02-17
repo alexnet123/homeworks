@@ -93,8 +93,86 @@ root@master0-ru-central1-a:/home/admin#
 
 4. Продемонстрировать доступ с помощью `curl` по доменному имени сервиса.
 
+`root@master0-ru-central1-a:/home/admin# kubectl exec multitool-pod -- curl nginx-multitool-service:9001`
 
-5. Предоставить манифесты Deployment и Service в решении, а также скриншоты или вывод команды п.4.
+```
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 <!DOCTYPE html>0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+  615  100   615    0     0   370k      0 --:--:-- --:--:-- --:--:--  600k
+```
+
+`root@master0-ru-central1-a:/home/admin# kubectl exec multitool-pod -- curl nginx-multitool-service:9002`
+
+```
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0Praqma Network MultiTool (with NGINX) - nginx-multitool-deployment-88cf96565-8fqh9 - 10.0.0.224 - HTTP: 1180 , HTTPS: 11443
+<br>
+<hr>
+<br>
+
+<h1>05 Jan 2022 - Press-release: `Praqma/Network-Multitool` is now `wbitt/Network-Multitool`</h1>
+
+<h2>Important note about name/org change:</h2>
+<p>
+Few years ago, I created this tool with Henrik Høegh, as `praqma/network-multitool`. Praqma was bought by another company, and now the "Praqma" brand is being dismantled. This means the network-multitool's git and docker repositories must go. Since, I was the one maintaining the docker image for all these years, it was decided by the current representatives of the company to hand it over to me so I can continue maintaining it. So, apart from a small change in the repository name, nothing has changed.<br>
+</p>
+<p>
+The existing/old/previous container image `praqma/network-multitool` will continue to work and will remain available for **"some time"** - may be for a couple of months - not sure though. 
+</p>
+<p>
+- Kamran Azeem <kamranazeem@gmail.com> <a href=https://github.com/KamranAzeem>https://github.com/KamranAzeem</a>
+</p>
+
+<h2>Some important URLs:</h2>
+
+<ul>
+  <li>The new official github repository for this tool is: <a href=https://github.com/wbitt/Network-MultiTool>https://github.com/wbitt/Network-MultiTool</a></li>
+
+100  1596  100  1596    0     0   552k      0 --:--:-- --:--:-- --:--:--  779k
+ub.docker.com/r/wbitt/network-multitool>https://hub.docker.com/r/wbitt/network-multitool</a></li>
+</ul>
+
+<br>
+Or:
+<br>
+
+<pre>
+  <code>
+  docker pull wbitt/network-multitool
+  </code>
+</pre>
+
+
+<hr>
+
+
+
+```
+
 
 ------
 
