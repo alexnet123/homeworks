@@ -151,6 +151,107 @@ Commercial support is available at
 ### Задание 2. Создать Deployment и обеспечить старт основного контейнера при выполнении условий
 
 1. Создать Deployment приложения nginx и обеспечить старт контейнера только после того, как будет запущен сервис этого приложения.
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multitool-pod
+spec:
+  containers:
+  - name: multitool
+    image: praqma/network-multitool
+
+root@master0-ru-central1-a:/home/admin# cat nginx-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      initContainers:
+      - name: init-check
+        image: busybox
+        command: ['sh', '-c', 'until nslookup my-nginx-service.default.svc.cluster.local; do echo waiting for nginx-service; sleep 2; done;']
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+
+```
+
 2. Убедиться, что nginx не стартует. В качестве Init-контейнера взять busybox.
+
+```
+root@master0-ru-central1-a:/home/admin# kubectl apply -f nginx-deployment.yaml 
+deployment.apps/nginx-deployment created
+root@master0-ru-central1-a:/home/admin# kubectl get pods
+NAME                                         READY   STATUS     RESTARTS   AGE
+multitool-pod                                1/1     Running    0          75s
+nginx-deployment-59655b655d-qttcz            0/1     Init:0/1   0          6s
+nginx-multitool-deployment-88cf96565-4kfgz   2/2     Running    0          3m10s
+nginx-multitool-deployment-88cf96565-jgtnc   2/2     Running    0          4m49s
+root@master0-ru-central1-a:/home/admin# kubectl get pods
+NAME                                         READY   STATUS     RESTARTS   AGE
+multitool-pod                                1/1     Running    0          77s
+nginx-deployment-59655b655d-qttcz            0/1     Init:0/1   0          8s
+nginx-multitool-deployment-88cf96565-4kfgz   2/2     Running    0          3m12s
+nginx-multitool-deployment-88cf96565-jgtnc   2/2     Running    0          4m51s
+root@master0-ru-central1-a:/home/admin# 
+root@master0-ru-central1-a:/home/admin# kubectl get svc
+NAME                      TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)                       AGE
+kubernetes                ClusterIP   10.96.0.1     <none>        443/TCP                       3h43m
+nginx-multitool-service   NodePort    10.108.0.60   <none>        80:30080/TCP,1180:30180/TCP   2m36s
+
+```
+
 3. Создать и запустить Service. Убедиться, что Init запустился.
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+```
+
 4. Продемонстрировать состояние пода до и после запуска сервиса.
+
+```
+root@master0-ru-central1-a:/home/admin# kubectl apply -f nginx-service.yaml 
+service/my-nginx-service created
+root@master0-ru-central1-a:/home/admin# kubectl get pods
+NAME                                         READY   STATUS            RESTARTS   AGE
+multitool-pod                                1/1     Running           0          107s
+nginx-deployment-59655b655d-qttcz            0/1     PodInitializing   0          38s
+nginx-multitool-deployment-88cf96565-4kfgz   2/2     Running           0          3m42s
+nginx-multitool-deployment-88cf96565-jgtnc   2/2     Running           0          5m21s
+root@master0-ru-central1-a:/home/admin# kubectl get pods
+NAME                                         READY   STATUS    RESTARTS   AGE
+multitool-pod                                1/1     Running   0          111s
+nginx-deployment-59655b655d-qttcz            1/1     Running   0          42s
+nginx-multitool-deployment-88cf96565-4kfgz   2/2     Running   0          3m46s
+nginx-multitool-deployment-88cf96565-jgtnc   2/2     Running   0          5m25s
+root@master0-ru-central1-a:/home/admin# kubectl get svc
+NAME                      TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)                       AGE
+kubernetes                ClusterIP   10.96.0.1      <none>        443/TCP                       3h44m
+my-nginx-service          ClusterIP   10.108.40.91   <none>        80/TCP                        10s
+nginx-multitool-service   NodePort    10.108.0.60    <none>        80:30080/TCP,1180:30180/TCP   2m55s
+
+```
