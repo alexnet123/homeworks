@@ -175,9 +175,63 @@ Commercial support is available at
 
 ### Задание 2. Создать Ingress и обеспечить доступ к приложениям снаружи кластера
 
-1. Включить Ingress-controller в MicroK8S.
+1. Включить Ingress-controller.
 2. Создать Ingress, обеспечивающий доступ снаружи по IP-адресу кластера MicroK8S так, чтобы при запросе только по адресу открывался _frontend_ а при добавлении /api - _backend_.
 3. Продемонстрировать доступ с помощью браузера или `curl` с локального компьютера.
-4. Предоставить манифесты и скриншоты или вывод команды п.2.
 
-------
+
+```
+root@master0-ru-central1-a:/home/admin# kubectl get svc
+NAME                                 TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+backend-service                      ClusterIP      10.101.234.188   <none>        8080/TCP                     16h
+frontend-service                     ClusterIP      10.106.38.95     <none>        80/TCP                       16h
+ingress-nginx-controller             LoadBalancer   10.102.46.78     <pending>     80:31915/TCP,443:32615/TCP   59m
+ingress-nginx-controller-admission   ClusterIP      10.107.25.112    <none>        443/TCP                      59m
+kubernetes                           ClusterIP      10.96.0.1        <none>        443/TCP                      16h
+```
+```
+root@master0-ru-central1-a:/home/admin# kubectl get ingress
+NAME              CLASS   HOSTS          ADDRESS   PORTS   AGE
+example-ingress   nginx   exec.test.ru             80      15h
+
+```
+
+```
+root@master0-ru-central1-a:/home/admin# cat ingress.yaml 
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: exec.test.ru
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 80
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-service
+                port:
+                  number: 8080
+
+```
+
+![Screenshot from 2024-02-18 15-17-18](https://github.com/alexnet123/homeworks/assets/75438030/2525196a-dfb1-4e9d-b759-09d06701b409)
+
+![Screenshot from 2024-02-18 15-17-26](https://github.com/alexnet123/homeworks/assets/75438030/a1f24325-9c50-4706-b78c-79e76d527073)
+
+
+
+
+
