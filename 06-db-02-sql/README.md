@@ -241,5 +241,58 @@ test_db=# SELECT c.last_name, o.name FROM clients c JOIN orders o ON c.order_id 
 (3 rows)
 
 ```
+
+Задача 5: Анализ выполнения запроса
+
 ---
 
+```
+test_db=# EXPLAIN SELECT c.last_name, o.name FROM clients c JOIN orders o ON c.order_id = o.id;
+                               QUERY PLAN                                
+-------------------------------------------------------------------------
+ Hash Join  (cost=11.57..24.20 rows=70 width=1032)
+   Hash Cond: (o.id = c.order_id)
+   ->  Seq Scan on orders o  (cost=0.00..11.40 rows=140 width=520)
+   ->  Hash  (cost=10.70..10.70 rows=70 width=520)
+         ->  Seq Scan on clients c  (cost=0.00..10.70 rows=70 width=520)
+(5 rows)
+
+```
+
+Задача 6: Бэкап и восстановление БД
+
+---
+
+Создание бэкапа:
+Используйте pg_dump для создания бэкапа БД test_db и поместите его в volume для бэкапов.
+
+pg_dump -U test test_db > /backups/test_db_backup.sql
+
+```
+root@09ced930809e:/# ls /backups/
+root@09ced930809e:/# pg_dump -U test > /backups/test_db_backup.sql
+root@09ced930809e:/# ls /backups/
+test_db_backup.sql
+root@09ced930809e:/# 
+
+```
+
+Остановка контейнера и поднятие нового:
+
+```
+root@sql2:/home/admin# docker ps -a
+CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+09ced930809e   postgres:12   "docker-entrypoint.s…"   40 minutes ago   Up 40 minutes   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   admin-postgres-1
+root@sql2:/home/admin# docker compose down
+[+] Running 2/2
+ ✔ Container admin-postgres-1  Removed                                                                                                                                                                        0.2s 
+ ✔ Network admin_default       Removed                                                                                                                                                                        0.1s 
+root@sql2:/home/admin# ls pgdata/
+base	pg_commit_ts  pg_hba.conf    pg_logical    pg_notify	pg_serial     pg_stat	   pg_subtrans	pg_twophase  pg_wal   postgresql.auto.conf  postmaster.opts
+global	pg_dynshmem   pg_ident.conf  pg_multixact  pg_replslot	pg_snapshots  pg_stat_tmp  pg_tblspc	PG_VERSION   pg_xact  postgresql.conf
+root@sql2:/home/admin# rm -rf  pgdata/*
+root@sql2:/home/admin# ls pgdata/
+root@sql2:/home/admin# 
+
+```
+psql -U test-admin-user -d test_db < /backups/test_db_backup.sql
