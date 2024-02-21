@@ -264,20 +264,6 @@ test_db=# EXPLAIN SELECT c.last_name, o.name FROM clients c JOIN orders o ON c.o
 ---
 
 Создание бэкапа:
-Используйте pg_dump для создания бэкапа БД test_db и поместите его в volume для бэкапов.
-
-pg_dump -U test test_db > /backups/test_db_backup.sql
-
-```
-root@09ced930809e:/# ls /backups/
-root@09ced930809e:/# pg_dump -U test > /backups/test_db_backup.sql
-root@09ced930809e:/# ls /backups/
-test_db_backup.sql
-root@09ced930809e:/# 
-
-```
-
-Остановка контейнера и поднятие нового:
 
 ```
 root@bcce772c4838:/# pg_dumpall -U test > /backups/backup.sql
