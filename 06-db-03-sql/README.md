@@ -8,21 +8,6 @@
 
 ```plaintext
 root@sql2:/home/admin/mysql# docker compose up -d
-[+] Running 11/11
- ✔ mysql 10 layers [⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿]      0B/0B      Pulled                                                                                                                                                       13.6s 
-   ✔ 81badc5f380f Pull complete                                                                                                                                                                               1.3s 
-   ✔ c490e5dd1a9d Pull complete                                                                                                                                                                               0.5s 
-   ✔ 87aeb61f1478 Pull complete                                                                                                                                                                               0.9s 
-   ✔ 1cacbea6ceda Pull complete                                                                                                                                                                               1.0s 
-   ✔ 1e72891ace67 Pull complete                                                                                                                                                                               1.3s 
-   ✔ 42b720363d36 Pull complete                                                                                                                                                                               1.4s 
-   ✔ 6b3b50f9990a Pull complete                                                                                                                                                                               2.5s 
-   ✔ 3811d52cfa61 Pull complete                                                                                                                                                                               1.8s 
-   ✔ 05bc7a0277d8 Pull complete                                                                                                                                                                               3.0s 
-   ✔ cc0abd25a274 Pull complete                                                                                                                                                                               2.3s 
-[+] Running 1/2
- ⠦ Network mysql_default    Created                                                                                                                                                                           4.6s 
- ✔ Container mysql-mysql-1  Started                                                                                                                                                                           4.5s 
 ```
 
 ### Проверка запущенных контейнеров
@@ -116,7 +101,7 @@ mysql> ALTER TABLE _ ENGINE = MyISAM |
 
 ```
 
-## ДРабота с файлом конфигурации
+## Работа с файлом конфигурации
 
 ### Поиск и просмотр файла конфигурации
 
