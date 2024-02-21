@@ -219,12 +219,12 @@ test_db=# SELECT * FROM clients;
 
 ```
 
-test_db=# UPDATE clients SET order_id = (SELECT id FROM orders WHERE name = 'Книга') WHERE last_name = 'Иванов Иван Иванович';
-UPDATE 1
-test_db=# UPDATE clients SET order_id = (SELECT id FROM orders WHERE name = 'Монитор') WHERE last_name = 'Петров Петр Петрович';
-UPDATE 1
-test_db=# UPDATE clients SET order_id = (SELECT id FROM orders WHERE name = 'Гитара') WHERE last_name = 'Иоганн Себастьян Бах';
-UPDATE 1
+UPDATE clients SET order_id = (SELECT id FROM orders WHERE name = 'Книга') WHERE last_name = 'Иванов Иван Иванович';
+
+UPDATE clients SET order_id = (SELECT id FROM orders WHERE name = 'Монитор') WHERE last_name = 'Петров Петр Петрович';
+
+UPDATE clients SET order_id = (SELECT id FROM orders WHERE name = 'Гитара') WHERE last_name = 'Иоганн Себастьян Бах';
+
 
 ```
 
@@ -280,19 +280,75 @@ root@09ced930809e:/#
 Остановка контейнера и поднятие нового:
 
 ```
+root@bcce772c4838:/# pg_dumpall -U test > /backups/backup.sql
+root@bcce772c4838:/# ls backups/
+backup.sql
+
+root@bcce772c4838:/# exit
+exit
+
 root@sql2:/home/admin# docker ps -a
-CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS          PORTS                                       NAMES
-09ced930809e   postgres:12   "docker-entrypoint.s…"   40 minutes ago   Up 40 minutes   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   admin-postgres-1
+CONTAINER ID   IMAGE                COMMAND                  CREATED          STATUS          PORTS                                              NAMES
+bcce772c4838   postgres:12          "docker-entrypoint.s…"   19 minutes ago   Up 19 minutes   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp          admin-postgres-1
+4347e249a574   dpage/pgadmin4:8.3   "/entrypoint.sh"         19 minutes ago   Up 19 minutes   443/tcp, 0.0.0.0:65113->80/tcp, :::65113->80/tcp   prnc_pgadmin
+
 root@sql2:/home/admin# docker compose down
-[+] Running 2/2
- ✔ Container admin-postgres-1  Removed                                                                                                                                                                        0.2s 
- ✔ Network admin_default       Removed                                                                                                                                                                        0.1s 
+[+] Running 3/2
+ ✔ Container admin-postgres-1  Removed                                                                                                 0.2s 
+ ✔ Container prnc_pgadmin      Removed                                                                                                 1.0s 
+ ✔ Network admin_default       Removed                                                                                                 0.1s 
+
+root@sql2:/home/admin# ls pg
+pgbackups/ pgdata/    pgsql/     
+root@sql2:/home/admin# ls pgsql/
+pgadmin
+
 root@sql2:/home/admin# ls pgdata/
-base	pg_commit_ts  pg_hba.conf    pg_logical    pg_notify	pg_serial     pg_stat	   pg_subtrans	pg_twophase  pg_wal   postgresql.auto.conf  postmaster.opts
-global	pg_dynshmem   pg_ident.conf  pg_multixact  pg_replslot	pg_snapshots  pg_stat_tmp  pg_tblspc	PG_VERSION   pg_xact  postgresql.conf
+base	      pg_dynshmem    pg_logical    pg_replslot	 pg_stat      pg_tblspc    pg_wal		 postgresql.conf
+global	      pg_hba.conf    pg_multixact  pg_serial	 pg_stat_tmp  pg_twophase  pg_xact		 postmaster.opts
+pg_commit_ts  pg_ident.conf  pg_notify	   pg_snapshots  pg_subtrans  PG_VERSION   postgresql.auto.conf
+
 root@sql2:/home/admin# rm -rf  pgdata/*
-root@sql2:/home/admin# ls pgdata/
-root@sql2:/home/admin# 
+
+root@sql2:/home/admin# docker compose up -d
+[+] Running 2/3
+ ⠦ Network admin_default       Created                                                                                                 0.6s 
+ ✔ Container prnc_pgadmin      Started                                                                                                 0.5s 
+ ✔ Container admin-postgres-1  Started                                                                                                 0.6s 
+
+root@sql2:/home/admin# docker ps -a
+CONTAINER ID   IMAGE                COMMAND                  CREATED          STATUS          PORTS                                              NAMES
+a93f9b7788b1   postgres:12          "docker-entrypoint.s…"   32 seconds ago   Up 30 seconds   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp          admin-postgres-1
+30b6716b6d91   dpage/pgadmin4:8.3   "/entrypoint.sh"         32 seconds ago   Up 31 seconds   443/tcp, 0.0.0.0:65113->80/tcp, :::65113->80/tcp   prnc_pgadmin
+
+root@sql2:/home/admin# docker exec -it a93f9b7788b1 bash
+
+root@a93f9b7788b1:/# psql -U test -d test_db < /backups/backup.sql
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  database "test_db" does not exist
+
+root@a93f9b7788b1:/# psql -U test
+psql (12.18 (Debian 12.18-1.pgdg120+2))
+Type "help" for help.
+
+test=# CREATE DATABASE test_db;
+CREATE DATABASE
+test=# \q
+
+root@a93f9b7788b1:/# psql -U test -d test_db < /backups/backup.sql
+
+test=# \c test_db
+You are now connected to database "test_db" as user "test".
+test_db=# SELECT * FROM orders;
+ id |  name   | price 
+----+---------+-------
+  1 | Шоколад |    10
+  2 | Принтер |  3000
+  3 | Книга   |   500
+  4 | Монитор |  7000
+  5 | Гитара  |  4000
+(5 rows)
+
+test_db=# 
+
 
 ```
-psql -U test-admin-user -d test_db < /backups/test_db_backup.sql
