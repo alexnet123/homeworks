@@ -63,7 +63,7 @@ Status: Downloaded newer image for waxboy/net-elastic:3
 
 
 ```
-`Выполните запрос к Elasticsearch`
+`Запрос к Elasticsearch`
 
 ```
 root@netology-elastic:/home/admin# docker ps -a
@@ -177,3 +177,105 @@ root@netology-elastic:/home/admin#
 
 ## Задача 3
 
+`Создание директории для snapshot`
+
+```
+root@netology-elastic:/home/admin# docker run -d -p 9200:9200 -v snapshots:/elasticsearch/snapshots waxboy/net-elastic:3
+30ede2055238bdbba0fa566ebd1fba01cb11c600c9e5aae27b61bc20c1ac1f26
+
+root@netology-elastic:/home/admin# docker ps -a
+CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS          PORTS                    NAMES
+30ede2055238   waxboy/net-elastic:3   "/elasticsearch/bin/…"   35 seconds ago   Up 34 seconds   0.0.0.0:9200->9200/tcp   stupefied_noether
+root@netology-elastic:/home/admin# 
+
+```
+`Регистрация snapshot repository`
+
+```
+
+root@netology-elastic:/home/admin# curl -X PUT "localhost:9200/_snapshot/netology_backup" -H 'Content-Type: application/json' -d'
+{
+  "type": "fs",
+  "settings": {
+    "location": "/elasticsearch/snapshots"
+  }
+}'
+{"acknowledged":true}
+root@netology-elastic:/home/admin# 
+root@netology-elastic:/home/admin# 
+
+```
+`Создание индекса и выполнение снимка состояния`
+
+```
+root@netology-elastic:/home/admin# curl -X PUT "localhost:9200/test" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "number_of_replicas": 0,
+    "number_of_shards": 1
+  }
+}'
+{"acknowledged":true,"shards_acknowledged":true,"index":"test"}root@netology-elastic:/home/admin# 
+
+```
+`Cнимок состояния кластера:`
+
+```
+root@netology-elastic:/home/admin# curl -X PUT "localhost:9200/_snapshot/netology_backup/snapshot_1?wait_for_completion=true"
+{"snapshot":{"snapshot":"snapshot_1","uuid":"TUGxou_TRZWRxrWIlRYxBQ","version_id":7100099,"version":"7.10.0","indices":["test"],"data_streams":[],"include_global_state":true,"state":"SUCCESS","start_time":"2024-02-25T11:21:30.007Z","start_time_in_millis":1708860090007,"end_time":"2024-02-25T11:21:30.207Z","end_time_in_millis":1708860090207,"duration_in_millis":200,"failures":[],"shards":{"total":1,"failed":0,"successful":1}}}root@netology-elastic:/home/admin# 
+```
+
+`Удаляем индекс test`
+
+```
+root@netology-elastic:/home/admin# curl -X DELETE "localhost:9200/test"
+{"acknowledged":true}
+root@netology-elastic:/home/admin# 
+
+```
+`Создание нового индекс test-2`
+
+```
+root@netology-elastic:/home/admin# curl -X PUT "localhost:9200/test-2" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "number_of_replicas": 0,
+    "number_of_shards": 1
+  }
+}'
+{"acknowledged":true,"shards_acknowledged":true,"index":"test-2"}
+root@netology-elastic:/home/admin# 
+
+```
+`Восстановление состояния из snapshot`
+
+```
+root@netology-elastic:/home/admin# curl -X POST "localhost:9200/_snapshot/netology_backup/snapshot_1/_restore"
+{"accepted":true}
+root@netology-elastic:/home/admin# 
+
+root@netology-elastic:/home/admin# curl -X GET "localhost:9200/test/_search?pretty"
+{
+  "took" : 36,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 1,
+    "successful" : 1,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : {
+      "value" : 0,
+      "relation" : "eq"
+    },
+    "max_score" : null,
+    "hits" : [ ]
+  }
+}
+root@netology-elastic:/home/admin# curl -X GET "localhost:9200/_cat/indices?v"
+health status index  uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   test-2 w9xHYI4MTx29EV3iQpSq-Q   1   0          0            0       208b           208b
+green  open   test   gMpFqhKcT4mqQ3Q89S8tRg   1   0          0            0       208b           208b
+
+```
