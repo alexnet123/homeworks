@@ -1,0 +1,55 @@
+---
+  - name: Get latest Cilium CLI version
+    shell: >
+      curl -s https://raw.githubusercontent.com/cilium/cilium-cli/master/stable.txt
+    register: cilium_cli_version
+    changed_when: false
+
+  - name: Set CLI_ARCH variable
+    set_fact:
+      cli_arch: "amd64"
+    when: ansible_architecture == "x86_64"
+      
+  - name: Set CLI_ARCH variable for arm64
+    set_fact:
+      cli_arch: "arm64"
+    when: ansible_architecture == "aarch64"
+
+  - name: Download Cilium CLI
+    get_url:
+      url: https://github.com/cilium/cilium-cli/releases/download/{{ cilium_cli_version.stdout }}/cilium-linux-{{ cli_arch }}.tar.gz
+      dest: /tmp/cilium-linux-{{ cli_arch }}.tar.gz
+      validate_certs: no
+
+  - name: Download SHA256 checksum file
+    get_url:
+      url: https://github.com/cilium/cilium-cli/releases/download/{{ cilium_cli_version.stdout }}/cilium-linux-{{ cli_arch }}.tar.gz.sha256sum
+      dest: /tmp/cilium-linux-{{ cli_arch }}.tar.gz.sha256sum
+      validate_certs: no
+
+  - name: Verify SHA256 checksum
+    shell: >
+      cd /tmp && sha256sum --check cilium-linux-{{ cli_arch }}.tar.gz.sha256sum
+    args:
+      chdir: /tmp
+
+  - name: Install Cilium CLI
+    when: ansible_os_family == 'Debian'
+    unarchive:
+      src: /tmp/cilium-linux-{{ cli_arch }}.tar.gz
+      dest: /usr/local/bin/
+      remote_src: yes
+      extra_opts: ["--no-same-owner"]
+
+  - name: Install Cilium CLI
+    when: ansible_os_family == 'RedHat'
+    unarchive:
+      src: /tmp/cilium-linux-{{ cli_arch }}.tar.gz
+      dest: /bin
+      remote_src: yes
+      extra_opts: ["--no-same-owner"]
+
+  - name: Remove temporary files
+    file:
+      path: /tmp/cilium-linux-{{ cli_arch }}*
+      state: absent

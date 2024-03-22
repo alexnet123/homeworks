@@ -1,0 +1,15 @@
+- hosts: all
+  gather_facts: false
+  become: true
+  
+  tasks:    
+    - name: Gathering Facts
+      block:
+        - name: Gathering Facts
+          setup:
+      rescue:
+        - name: install python3
+          shell: ./install_python3
+          delegate_to: localhost
+        # - name: Play the playbook again
+        #   include: start_role.yml

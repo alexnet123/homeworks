@@ -1,0 +1,9 @@
+---
+# handlers file for Kubernetes
+
+  - name: Enable noswap service
+    systemd:
+      name: noswap
+      state: started
+      enabled: true
+      daemon_reload: true

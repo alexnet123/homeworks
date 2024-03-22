@@ -1,0 +1,86 @@
+- name: configure iptables rules all hosts
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Install required system packages
+      apt:
+        pkg:
+          - iptables-persistent
+        state: latest
+        update_cache: true
+    
+    - name: Allow related and established connections
+      iptables:
+        chain: INPUT
+        state: present
+        ctstate: ESTABLISHED,RELATED
+        jump: ACCEPT
+      become: yes
+
+    - name: allow SSH connections
+      iptables:
+        chain: INPUT
+        state: present
+        protocol: tcp
+        destination_port: 22
+        jump: ACCEPT
+
+    - name: allow loopback traffic
+      iptables:
+        chain: INPUT
+        state: present
+        in_interface: lo
+        jump: ACCEPT
+
+    - name: allow ICMP traffic
+      iptables:
+        chain: INPUT
+        state: present
+        protocol: icmp
+        jump: ACCEPT
+
+    - name: drop all other traffic
+      iptables:
+        chain: INPUT
+        state: present
+        jump: DROP
+
+    - name: save iptables rules
+      shell: iptables-save > /etc/iptables/rules.v4
+
+- name: configure iptables rules grafana
+  hosts: grafana
+  become: true
+  tasks:
+
+    - name: allow access to port 3000
+      iptables:
+        chain: INPUT
+        state: present
+        protocol: tcp
+        destination_port: 3000
+        jump: ACCEPT
+        action: insert
+        rule_num: 2
+
+    - name: save iptables rules
+      shell: iptables-save > /etc/iptables/rules.v4
+
+- name: configure iptables rules prometheus
+  hosts: prometheus
+  become: true
+  tasks:
+
+    - name: allow access to port 9090
+      iptables:
+        chain: INPUT
+        state: present
+        protocol: tcp
+        destination_port: 9090
+        jump: ACCEPT
+        action: insert
+        rule_num: 2
+
+    - name: save iptables rules
+      shell: iptables-save > /etc/iptables/rules.v4

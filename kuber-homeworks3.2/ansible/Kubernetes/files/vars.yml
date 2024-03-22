@@ -1,0 +1,1 @@
+master_join: "kubeadm join 192.168.10.16:6443 --token pwab1w.4bjsskqfo5i4n223 --discovery-token-ca-cert-hash sha256:81b39b81535821311e6177e4fdaaca8de34322a165310e34b99a906a6c96e1e3 "

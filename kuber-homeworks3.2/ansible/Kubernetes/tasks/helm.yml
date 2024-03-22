@@ -1,0 +1,21 @@
+---
+# tasks file for Helm
+  - name: Download Helm install script 
+    get_url:
+      url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+      dest: /tmp/get_helm.sh
+
+  - name: Set script permissions
+    file:
+      path: /tmp/get_helm.sh
+      mode: "u+x"
+
+  - name: Replace HELM_INSTALL_DIR Centos
+    when: ansible_os_family == 'RedHat'
+    shell: |
+      sed -i 's/: \${HELM_INSTALL_DIR:="\/usr\/local\/bin"}/: \${HELM_INSTALL_DIR:="\/bin"}/g' /tmp/get_helm.sh
+
+  - name: Install Helm
+    command: /tmp/get_helm.sh
+
+...

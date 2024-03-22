@@ -1,0 +1,29 @@
+--- 
+- name: Create join token
+  command: kubeadm token create --print-join-command
+  register: join_command
+  when: inventory_hostname in groups['master']
+  ignore_errors: true
+
+- name: Clear Kubernetes/files/vars.yml
+  copy:
+    dest: Kubernetes/files/vars.yml
+    content: ''
+  delegate_to: localhost
+  when: inventory_hostname in groups['master']
+
+- name: Add line to file
+  lineinfile:
+    path: Kubernetes/files/vars.yml
+    line: 'master_join: "{{ join_command.stdout }}"'
+    state: present
+  delegate_to: localhost
+  when: inventory_hostname in groups['master']
+
+- name: Load master_join variable
+  include_vars: Kubernetes/files/vars.yml
+
+- name: Join cluster
+  command: "{{ master_join }}"
+  when: inventory_hostname in groups['worker']
+...

@@ -1,0 +1,32 @@
+---
+# vars file for Kubernet
+kube_config_path: "/etc/kubernetes/admin.conf"
+hubble_version: "{{ lookup('url', 'https://raw.githubusercontent.com/cilium/hubble/master/stable.txt') }}"
+dependencies:
+  debian:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg
+    - tzdata
+    - git
+    - build-essential
+    - bash-completion
+  centos:
+    - epel-release
+    - curl
+    - git
+    - gcc
+    - gcc-c++
+    - make
+    - automake
+    - autoconf
+    - libtool
+    - zlib-devel
+    - openssl-devel
+    - libffi-devel
+    - python3-devel
+    - python3-pip
+    # - glibc-all-langpacks
+    # - langpacks-en 
+    # - glibc-langpack-en

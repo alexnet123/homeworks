@@ -1,0 +1,32 @@
+#!/bin/bash
+
+
+# IP адрес удаленного хоста и пользователь для SSH подключения
+readarray -t hosts <<< "$(cat hosts | awk '{print $4}' | grep ansible_host | awk -F '=' '{print $2}')"
+REMOTE_USER="admin"
+
+# Команда, которую нужно выполнить на удаленном хосте
+REMOTE_COMMAND="sudo -s yum install -yq python3"
+
+# Вывод элементов массива
+for host in "${hosts[@]}"
+do
+    # Выполнение команды на удаленном хосте через SSH
+    echo "Host: $host install python3"
+    ssh -o StrictHostKeyChecking=no "$REMOTE_USER"@"$host" "$REMOTE_COMMAND"
+done
+
+
+
+# if [ -f /etc/redhat-release ]; then
+#     echo "Red Hat based system detected"
+#     install_py
+# elif [ -f /etc/debian_version ]; then
+#     echo "Debian based system detected"
+# else
+#     echo "Unknown system"
+# fi
+
+
+
+

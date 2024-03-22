@@ -1,0 +1,76 @@
+
+- name: Add Kubernetes repository RedHat
+  when: ansible_os_family == 'RedHat'
+  yum_repository:
+    name: kubernetes
+    description: Kubernetes Repository
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    gpgcheck: yes
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    enabled: yes
+
+- name: Install Kubernetes components RedHat
+  when: ansible_os_family == 'RedHat'
+  yum:
+    name:
+      - kubeadm
+      # - kubelet
+      # - kubectl
+    state: latest
+    nobest: yes
+
+#- name: Add GPG key for Kubernetes repository Debian
+#  when: ansible_os_family == 'Debian'
+#  apt_key:
+#    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+#    state: present
+#
+#- name: Add Kubernetes repository Debian
+#  when: ansible_os_family == 'Debian'
+#  apt_repository:
+#    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+#    state: present
+#    filename: kubernetes.list
+
+- name: Download Kubernetes GPG key
+  when: ansible_os_family == 'Debian'
+  get_url:
+    url: "https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key"
+    dest: "/tmp/kubernetes-apt-keyring.gpg"
+
+- name: Convert GPG key to apt keyring format
+  when: ansible_os_family == 'Debian'
+  shell: "gpg --dearmor </tmp/kubernetes-apt-keyring.gpg > /etc/apt/kubernetes-apt-keyring.gpg"
+
+- name: Ensure sources.list.d directory exists
+  file:
+    path: /etc/apt/sources.list.d/kubernetes.list
+    state: touch
+
+- name: Add Kubernetes apt repository
+  blockinfile:
+    path: /etc/apt/sources.list.d/kubernetes.list
+    block: |
+      deb [signed-by=/etc/apt/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /
+
+- name: Update apt package index
+  when: ansible_os_family == 'Debian'
+  become: yes
+  apt:
+    update_cache: yes
+
+- name: Install Kubernetes components Debian
+  when: ansible_os_family == 'Debian'
+  apt:
+    name:
+      - kubeadm
+      - kubelet
+      - kubectl
+    state: latest
+    update_cache: true
+
+- name: start kubelet
+  service:
+    name: kubelet
+    state: started
+    enabled: yes

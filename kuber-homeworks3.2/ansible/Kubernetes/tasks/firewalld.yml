@@ -1,0 +1,16 @@
+- name: Stop service firewalld
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+  ignore_errors: true
+
+- name: Replace SELINUX Centos
+  when: ansible_os_family == 'RedHat'
+  shell: |
+    sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+
+- name: Reboot
+  reboot:
+    reboot_timeout: 300
+    post_reboot_delay: 30

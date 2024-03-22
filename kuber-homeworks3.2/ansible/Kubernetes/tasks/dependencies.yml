@@ -1,0 +1,29 @@
+---
+
+  - name: Update the server Debian
+    when: ansible_os_family == 'Debian'
+    apt:
+      update_cache: yes
+      upgrade: yes
+    
+  - name: Update the server RedHat
+    when: ansible_os_family == 'RedHat'
+    yum:
+      name: '*'
+      state: latest
+      nobest: yes
+    
+  - name: Install and configure the necessary dependencies Debian
+    when: ansible_os_family == 'Debian'
+    apt:
+      pkg: "{{ dependencies.debian }}"
+      state: latest
+      update_cache: true
+  
+  - name: Install and configure the necessary dependencies RedHat
+    when: ansible_os_family == 'RedHat'
+    yum:
+      name: "{{ dependencies.centos }}"
+      state: latest
+      nobest: yes
+...

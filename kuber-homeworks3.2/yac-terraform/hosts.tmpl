@@ -1,0 +1,9 @@
+[master]
+%{ for instance in yandex_compute_instance_vm_master ~}
+${instance.name} ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_host=${instance.network_interface.0.nat_ip_address} ansible_user=${user_vm_master} ansible_python_interpreter=/usr/bin/python3
+%{ endfor }
+
+[worker]
+%{ for instance in yandex_compute_instance_vm_worker ~}
+${instance.name} ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_host=${instance.network_interface.0.nat_ip_address} ansible_user=${user_vm_worker} ansible_python_interpreter=/usr/bin/python3
+%{ endfor }

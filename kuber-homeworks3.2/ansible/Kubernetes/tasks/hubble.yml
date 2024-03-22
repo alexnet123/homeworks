@@ -1,0 +1,28 @@
+---
+  - name: Download Hubble binary
+    get_url:
+      url: "https://github.com/cilium/hubble/releases/download/{{ hubble_version }}/hubble-linux-amd64.tar.gz"
+      dest: "/tmp/hubble-linux-amd64.tar.gz"
+      #checksum: "sha256:{{ lookup('url', 'https://github.com/cilium/hubble/releases/download/{{ hubble_version }}/hubble-linux-amd64.tar.gz.sha256sum') }}"
+
+  - name: Extract Hubble binary to /usr/local/bin
+    unarchive:
+      src: "/tmp/hubble-linux-amd64.tar.gz"
+      dest: "/usr/local/bin"
+      remote_src: true
+      creates: "/usr/local/bin/hubble"
+    when: ansible_os_family == 'Debian'
+
+  - name: Extract Hubble binary to /usr/local/bin
+    unarchive:
+      src: "/tmp/hubble-linux-amd64.tar.gz"
+      dest: "/bin/"
+      remote_src: true
+      creates: "/bin/hubble"
+    when: ansible_os_family == 'RedHat'
+
+  - name: Remove downloaded file
+    file:
+      path: "/tmp/hubble-linux-amd64.tar.gz"
+      state: absent
+...
