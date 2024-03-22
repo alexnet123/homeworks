@@ -1,6 +1,16 @@
 # Домашнее задание к занятию «Установка Kubernetes» Вахрамеев А.В.
 
-Установку выполнял плейбуком Ansible 
+Развертывание кластера осуществляется с помощью платформы Terraform и собственной роли Ansible.
+### Запуск
+
+```
+git clone https://github.com/alexnet123/homeworks.git
+cd homeworks/kuber-homeworks3.2
+chmde 777 apply
+Устанавливаем свои данные от YC
+./apply
+```
+
 
 ![Screenshot from 2024-03-22 17-43-08](https://github.com/alexnet123/homeworks/assets/75438030/2ed1e61f-1a97-485b-a0d3-e182e8ecb9bb)
 
